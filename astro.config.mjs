@@ -5,6 +5,7 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
   site: 'https://chuffed-code.github.io',
   base: '/Chuffed-Guides',
+  trailingSlash: 'always',
   integrations: [
     starlight({
       title: 'Chuffed-Guides',                                            
