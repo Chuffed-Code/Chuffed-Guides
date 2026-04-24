@@ -59,7 +59,7 @@ Sincerely,
 ```
 
 :::tip[Use your PMB address]
-If you've set up a PMB ghost address (see [the PMB guide](/privacy/identity/pmb-ghost-address/)), use it here instead of your home address. There's no reason to hand a company your real home address just to opt out of their arbitration clause.
+If you've set up a PMB ghost address (see [the PMB guide](../../identity/pmb-ghost-address/)), use it here instead of your home address. There's no reason to hand a company your real home address just to opt out of their arbitration clause.
 :::
 
 ## Browse by category

@@ -304,7 +304,7 @@ Once catch-all is enabled on your custom domain, you can **invent email addresse
 This isn't about acting like a robot. It's about making Firefox do the heavy lifting for you — blocking trackers, isolating accounts, and stopping scripts that spy on you. Once set up, you browse normally. The browser handles the rest.
 
 :::tip[Already using LibreWolf?]
-If you've gone through the [LibreWolf Hardening guide](/privacy/browsers/librewolf-hardening/), most of this Part is already done for you — LibreWolf ships with hardened defaults, uBlock Origin pre-installed, and tracking protection enabled. Skip to the Multi-Account Containers section. This Part exists for users who aren't ready to switch to LibreWolf yet and want to harden regular Firefox instead.
+If you've gone through the [LibreWolf Hardening guide](../../browsers/librewolf-hardening/), most of this Part is already done for you — LibreWolf ships with hardened defaults, uBlock Origin pre-installed, and tracking protection enabled. Skip to the Multi-Account Containers section. This Part exists for users who aren't ready to switch to LibreWolf yet and want to harden regular Firefox instead.
 :::
 
 ### Step 1: Switch to Firefox

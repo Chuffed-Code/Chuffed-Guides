@@ -201,7 +201,7 @@ The trust setup happens **after** your PMB is live and tested, but **before or a
 
 | When | What |
 |---|---|
-| Day 1 | VPN + Proton Family + SimpleLogin (per [master roadmap](/privacy/)) |
+| Day 1 | VPN + Proton Family + SimpleLogin (per [master roadmap](../../)) |
 | Week 1 | PMB setup at Americas Mailbox — real name, real card. Wait for welcome packet. |
 | Week 2 | PMB confirmed live. Custom domain + Privacy.com setup. **Begin contacting attorneys.** |
 | Week 3 | Initial attorney consultation. Confirm they'll serve as trustee. Discuss fees and structure. |
@@ -209,7 +209,7 @@ The trust setup happens **after** your PMB is live and tested, but **before or a
 | Week 5–6 | Attorney amends Trust A — appoints themselves as trustee. Drafts quitclaim deed, affidavit, Garn-St. Germain letter. |
 | Week 6–7 | Quitclaim deed signed, notarized, and recorded at your county. Notification letter sent to mortgage lender. Your name is now off the public deed. |
 | Week 7–8 | Transfer paid-off vehicles to Trust B at DMV. Begin migrating utilities to trust name. |
-| Week 8+ | Continue [master roadmap](/privacy/): migrate institutional addresses to PMB, email migration, begin Optery in Month 2 once PMB has propagated. |
+| Week 8+ | Continue [master roadmap](../../): migrate institutional addresses to PMB, email migration, begin Optery in Month 2 once PMB has propagated. |
 | When paid off | Transfer any financed vehicle to Trust B at DMV. |
 | Ongoing | Mortgage auto-pays from trust checking. Property taxes auto-pay. Insurance references trust. Attorney signs when needed. Annual retainer paid. |
 
@@ -282,7 +282,7 @@ Someone searches your name on the county property records website: **nothing**. 
 
 ## The complete trust action list
 
-### Prerequisites (from [master roadmap](/privacy/))
+### Prerequisites (from [master roadmap](../../))
 
 - [ ] PMB set up and tested at Americas Mailbox
 - [ ] Proton email with aliases active

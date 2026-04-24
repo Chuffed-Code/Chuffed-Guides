@@ -1,16 +1,12 @@
 ---
 title: "Chuffed-Guides"
-description: "Practical guides made with AI."
+description: "Guides, written down so I don't have to remember."
 template: splash
 ---
 
-Practical, hands-on guides with real steps and the gotchas most tutorials skip. Made with AI.
+A collection of guides I've built. More get added as I build them.
 
 ## What's inside
 
-- **[Privacy](/privacy/)** — Threat-model-first walkthroughs: ghost addresses, email aliasing, Privacy.com, data broker removal, and anonymous phone stacks — in the order you should actually do them.
-- **[Linux](/linux/)** — Plain-language fundamentals and desktop environment comparisons, anchored to the distros people actually run.
-
-## License
-
-Everything here is dedicated to the public domain under [CC0](/LICENSE). Copy it, fork it, mirror it, rewrite it, sell it — no attribution required. The point is for good information to spread.
+- **[Privacy](./privacy/)** — Ghost addresses, email aliases, data broker removal, and related setups.
+- **[Linux](./linux/)** — Desktop environment notes and fundamentals.

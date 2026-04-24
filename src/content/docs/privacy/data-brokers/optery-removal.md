@@ -239,7 +239,7 @@ While Optery is running, take care of these related tasks to stop new data from 
 
 ### Phase 1 — Year 1 (Optery Ultimate ~$249)
 
-- ① Set up PMB ghost address first (see [PMB Guide](/privacy/identity/pmb-ghost-address/))
+- ① Set up PMB ghost address first (see [PMB Guide](../../identity/pmb-ghost-address/))
 - ② Migrate all institutional addresses to PMB
 - ③ Sign up for Optery Free Basic — get Exposure Report
 - ④ Upgrade to Ultimate (yearly billing)

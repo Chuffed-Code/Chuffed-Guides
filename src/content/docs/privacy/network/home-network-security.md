@@ -235,7 +235,7 @@ The GL.iNet Beryl/Slate is also a travel router. When you're at a hotel, it sits
 : Protectli Vault FW4B ($400) + GL.iNet Beryl ($70) + UPS ($60) + cables ($10). Optional: second Beryl for streaming network ($70) or travel.
 
 **📡 Monthly VPN — included / ~$5–10/mo**
-: ProtonVPN Plus plan. Already included in your Proton Family subscription from the [master roadmap](/privacy/). If not, standalone pricing applies.
+: ProtonVPN Plus plan. Already included in your Proton Family subscription from the [master roadmap](../../). If not, standalone pricing applies.
 
 **⏱️ Setup time — one afternoon**
 : First-time setup: 2–4 hours including practice run. Subsequent rebuilds (from backup config): 30 minutes.
