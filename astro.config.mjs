@@ -8,7 +8,8 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Chuffed-Guides',                                            
-      description: 'Useful guides built with AI.',  
+      description: 'Useful guides built with AI.',
+      favicon: '/favicon.svg',
       social: [
         {
           icon: 'github',

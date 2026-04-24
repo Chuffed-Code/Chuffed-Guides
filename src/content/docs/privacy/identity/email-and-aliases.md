@@ -69,6 +69,11 @@ Random newsletter ──→  news7@quietmail.net     ──→  SimpleLogin catc
 
 Three layers. The outside world only ever touches the outermost one. Your real inbox is the vault nobody knows about.
 
+<figure style="margin: 2rem 0;">
+  <img src="/Chuffed-Guides/diagrams/email-alias-flow.svg" alt="Animation showing three email addresses (SHOP, BANK, NEWSLETTER) sending through a central SimpleLogin hub, which forwards everything to a single encrypted Proton vault" style="width: 100%; border-radius: 4px; display: block;" />
+  <figcaption style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; text-align: center; color: var(--sl-color-gray-3); margin-top: 0.5rem;">Many addresses → one inbox → zero correlation.</figcaption>
+</figure>
+
 | ✗ BEFORE: `jane.doe@gmail.com` | ✓ AFTER: `random8472@proton.me` (secret vault) |
 |---|---|
 | → Given to every website & person | → Given to NOBODY, ever |
