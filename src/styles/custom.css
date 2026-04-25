@@ -181,7 +181,10 @@
 }
 
 /* Wordmark icons (Qobuz, Optery, Americas Mailbox) need a wider
-   slot than the square brand marks. */
+   slot than the square brand marks. If you add a tool with a wordmark
+   logo, give it an explicit width/flex-basis below and add its slug
+   to this `height: auto` group. Square monochrome marks don't need
+   anything here — they inherit the 1.6rem default from `.tool-icon`. */
 .tool-stack .i-qobuz,
 .tool-stack .i-optery,
 .tool-stack .i-americas-mailbox {
@@ -213,7 +216,13 @@
 }
 
 /* Brand-color overrides per icon. astro-icon renders inline SVGs
-   that respect `color` (currentColor) for monochrome marks. */
+   that respect `color` (currentColor) for monochrome marks.
+
+   These selectors are 1:1 with the tool cards in
+   src/content/docs/index.mdx — each `.i-<slug>` matches the matching
+   `class="tool-icon i-<slug>"` on a card. If you swap a tool, also
+   add/remove/rename its color rule here, and grab the new brand color
+   from the provider's brand guidelines or simpleicons.org. */
 .i-protonmail { color: #6D4AFF; }
 .i-simplelogin { color: #EE4F2A; }
 .i-bitwarden { color: #175DDC; }

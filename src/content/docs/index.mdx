@@ -14,6 +14,26 @@ hero:
 import { LinkCard } from '@astrojs/starlight/components';
 import { Icon } from 'astro-icon/components';
 
+{/*
+  Swapping a tool in the "My stack" cards below touches up to five places.
+  Walk the list when replacing a provider so nothing drifts:
+
+    1. <a class="tool-link" href="…">  the card's external destination
+    2. <Icon name="…">                  iconify slug, or local SVG name from
+                                        src/icons/ — see astro-icon docs
+    3. <span class="tool-name"> + <span class="tool-desc">   visible copy
+    4. class="tool-icon i-<slug>"       per-tool CSS hook; the matching
+                                        brand color lives in
+                                        src/styles/custom.css under the
+                                        "Brand-color overrides" section
+    5. <a class="tool-guide-pill" href="…">guide</a>   only if the new tool
+                                        also has a guide on this site;
+                                        delete the pill otherwise
+
+  For wordmark icons (currently Qobuz, Optery, Americas Mailbox) there's
+  also a width/flex-basis rule in custom.css since they aren't square.
+*/}
+
 ## My stack
 
 The tools I actually use, day to day. Click a card to open the tool's website. Cards with a <span class="tool-guide-pill-inline">guide</span> tag have a write-up on this site — click that tag instead.
@@ -22,7 +42,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
 
 <ul class="tool-stack">
   <li class="tool">
-    <a class="tool-link" href="https://proton.me" target="_blank" rel="noopener" aria-label="Proton Mail website"></a>
+    <a class="tool-link" href="https://proton.me" target="_blank" rel="noopener noreferrer" aria-label="Proton Mail website"></a>
     <Icon name="simple-icons:protonmail" class="tool-icon i-protonmail" />
     <div class="tool-content">
       <span class="tool-name">Proton Mail</span>
@@ -30,7 +50,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://simplelogin.io" target="_blank" rel="noopener" aria-label="SimpleLogin website"></a>
+    <a class="tool-link" href="https://simplelogin.io" target="_blank" rel="noopener noreferrer" aria-label="SimpleLogin website"></a>
     <Icon name="simple-icons:simplelogin" class="tool-icon i-simplelogin" />
     <div class="tool-content">
       <span class="tool-name">SimpleLogin</span>
@@ -39,7 +59,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     <a class="tool-guide-pill" href="./privacy/identity/email-and-aliases/">guide</a>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://bitwarden.com" target="_blank" rel="noopener" aria-label="Bitwarden website"></a>
+    <a class="tool-link" href="https://bitwarden.com" target="_blank" rel="noopener noreferrer" aria-label="Bitwarden website"></a>
     <Icon name="simple-icons:bitwarden" class="tool-icon i-bitwarden" />
     <div class="tool-content">
       <span class="tool-name">Bitwarden</span>
@@ -47,7 +67,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://librewolf.net" target="_blank" rel="noopener" aria-label="LibreWolf website"></a>
+    <a class="tool-link" href="https://librewolf.net" target="_blank" rel="noopener noreferrer" aria-label="LibreWolf website"></a>
     <Icon name="simple-icons:librewolf" class="tool-icon i-librewolf" />
     <div class="tool-content">
       <span class="tool-name">LibreWolf</span>
@@ -56,7 +76,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     <a class="tool-guide-pill" href="./privacy/browsers/librewolf-hardening/">guide</a>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://brave.com" target="_blank" rel="noopener" aria-label="Brave website"></a>
+    <a class="tool-link" href="https://brave.com" target="_blank" rel="noopener noreferrer" aria-label="Brave website"></a>
     <Icon name="simple-icons:brave" class="tool-icon i-brave" />
     <div class="tool-content">
       <span class="tool-name">Brave</span>
@@ -64,7 +84,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://mullvad.net/en/browser" target="_blank" rel="noopener" aria-label="Mullvad Browser website"></a>
+    <a class="tool-link" href="https://mullvad.net/en/browser" target="_blank" rel="noopener noreferrer" aria-label="Mullvad Browser website"></a>
     <Icon name="simple-icons:mullvad" class="tool-icon i-mullvad" />
     <div class="tool-content">
       <span class="tool-name">Mullvad Browser</span>
@@ -72,7 +92,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://americasmailbox.com/" target="_blank" rel="noopener" aria-label="Americas Mailbox website"></a>
+    <a class="tool-link" href="https://americasmailbox.com/" target="_blank" rel="noopener noreferrer" aria-label="Americas Mailbox website"></a>
     <img src={`${import.meta.env.BASE_URL}icons/americas-mailbox.png`} alt="" class="tool-icon i-americas-mailbox" />
     <div class="tool-content">
       <span class="tool-name">Americas Mailbox</span>
@@ -81,7 +101,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     <a class="tool-guide-pill" href="./privacy/identity/pmb-ghost-address/">guide</a>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://optery.com" target="_blank" rel="noopener" aria-label="Optery website"></a>
+    <a class="tool-link" href="https://optery.com" target="_blank" rel="noopener noreferrer" aria-label="Optery website"></a>
     <Icon name="optery" class="tool-icon i-optery" />
     <div class="tool-content">
       <span class="tool-name">Optery</span>
@@ -95,7 +115,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
 
 <ul class="tool-stack">
   <li class="tool">
-    <a class="tool-link" href="https://www.apple.com/macos/" target="_blank" rel="noopener" aria-label="macOS website"></a>
+    <a class="tool-link" href="https://www.apple.com/macos/" target="_blank" rel="noopener noreferrer" aria-label="macOS website"></a>
     <Icon name="simple-icons:apple" class="tool-icon i-apple" />
     <div class="tool-content">
       <span class="tool-name">macOS</span>
@@ -103,7 +123,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://archlinux.org" target="_blank" rel="noopener" aria-label="Arch Linux website"></a>
+    <a class="tool-link" href="https://archlinux.org" target="_blank" rel="noopener noreferrer" aria-label="Arch Linux website"></a>
     <Icon name="simple-icons:archlinux" class="tool-icon i-archlinux" />
     <div class="tool-content">
       <span class="tool-name">Arch</span>
@@ -111,7 +131,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://kde.org/plasma-desktop/" target="_blank" rel="noopener" aria-label="KDE Plasma website"></a>
+    <a class="tool-link" href="https://kde.org/plasma-desktop/" target="_blank" rel="noopener noreferrer" aria-label="KDE Plasma website"></a>
     <Icon name="simple-icons:kdeplasma" class="tool-icon i-kdeplasma" />
     <div class="tool-content">
       <span class="tool-name">KDE Plasma</span>
@@ -119,7 +139,7 @@ The tools I actually use, day to day. Click a card to open the tool's website. C
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://hypr.land" target="_blank" rel="noopener" aria-label="Hyprland website"></a>
+    <a class="tool-link" href="https://hypr.land" target="_blank" rel="noopener noreferrer" aria-label="Hyprland website"></a>
     <Icon name="simple-icons:hyprland" class="tool-icon i-hyprland" />
     <div class="tool-content">
       <span class="tool-name">Hyprland</span>
@@ -135,7 +155,7 @@ Terminal and shell still TBD.
 
 <ul class="tool-stack">
   <li class="tool">
-    <a class="tool-link" href="https://obsidian.md" target="_blank" rel="noopener" aria-label="Obsidian website"></a>
+    <a class="tool-link" href="https://obsidian.md" target="_blank" rel="noopener noreferrer" aria-label="Obsidian website"></a>
     <Icon name="simple-icons:obsidian" class="tool-icon i-obsidian" />
     <div class="tool-content">
       <span class="tool-name">Obsidian</span>
@@ -143,7 +163,7 @@ Terminal and shell still TBD.
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://signal.org" target="_blank" rel="noopener" aria-label="Signal website"></a>
+    <a class="tool-link" href="https://signal.org" target="_blank" rel="noopener noreferrer" aria-label="Signal website"></a>
     <Icon name="simple-icons:signal" class="tool-icon i-signal" />
     <div class="tool-content">
       <span class="tool-name">Signal</span>
@@ -151,7 +171,7 @@ Terminal and shell still TBD.
     </div>
   </li>
   <li class="tool">
-    <a class="tool-link" href="https://qobuz.com" target="_blank" rel="noopener" aria-label="Qobuz website"></a>
+    <a class="tool-link" href="https://qobuz.com" target="_blank" rel="noopener noreferrer" aria-label="Qobuz website"></a>
     <Icon name="qobuz" class="tool-icon i-qobuz" />
     <div class="tool-content">
       <span class="tool-name">Qobuz</span>

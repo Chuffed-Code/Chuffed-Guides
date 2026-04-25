@@ -70,7 +70,7 @@ Random newsletter ──→  news7@quietmail.net     ──→  SimpleLogin catc
 Three layers. The outside world only ever touches the outermost one. Your real inbox is the vault nobody knows about.
 
 <figure style="margin: 2rem 0;">
-  <img src="/Chuffed-Guides/diagrams/email-alias-flow.svg" alt="Animation showing three email addresses (SHOP, BANK, NEWSLETTER) sending through a central SimpleLogin hub, which forwards everything to a single encrypted Proton vault" style="width: 100%; border-radius: 4px; display: block;" />
+  <img src={`${import.meta.env.BASE_URL}diagrams/email-alias-flow.svg`} alt="Animation showing three email addresses (SHOP, BANK, NEWSLETTER) sending through a central SimpleLogin hub, which forwards everything to a single encrypted Proton vault" style="width: 100%; border-radius: 4px; display: block;" />
   <figcaption style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; text-align: center; color: var(--sl-color-gray-3); margin-top: 0.5rem;">Many addresses → one inbox → zero correlation.</figcaption>
 </figure>
 
@@ -290,11 +290,11 @@ TIER 4 — Removals         →  Dedicated throwaway alias      (expect hostilit
 
 | Situation | What to Use | Why |
 |---|---|---|
-| **Banks, credit cards, brokerage** | Direct Proton alias<br>`finances7722@proton.me` | No middleman. If SimpleLogin disappears, your bank email still works |
-| **Doctor, insurance, government** | Custom domain catch-all<br>`doctor@quietmail.net` | You own the domain. Portable if Proton disappears. Just invent it on the spot |
-| **Shopping, subscriptions, apps** | SimpleLogin alias<br>`amazon-k9x@simplelogin.co` | Killable. If it gets spam, disable it in one click and make a new one |
+| **Banks, credit cards, brokerage** | Direct Proton alias<br/>`finances7722@proton.me` | No middleman. If SimpleLogin disappears, your bank email still works |
+| **Doctor, insurance, government** | Custom domain catch-all<br/>`doctor@quietmail.net` | You own the domain. Portable if Proton disappears. Just invent it on the spot |
+| **Shopping, subscriptions, apps** | SimpleLogin alias<br/>`amazon-k9x@simplelogin.co` | Killable. If it gets spam, disable it in one click and make a new one |
 | **Junk signups, sketchy sites** | SimpleLogin random alias | Disposable. No thought required. If compromised, who cares |
-| **Data broker removal requests** | Dedicated throwaway alias<br>`removals@simplelogin.co` | Some brokers are hostile. Isolate this activity completely |
+| **Data broker removal requests** | Dedicated throwaway alias<br/>`removals@simplelogin.co` | Some brokers are hostile. Isolate this activity completely |
 
 ### The catch-all trick (your daily superpower)
 
