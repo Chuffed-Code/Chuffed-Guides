@@ -1,0 +1,385 @@
+---
+title: Linux distros at a glance
+description: A field guide to twenty-seven Linux distributions worth knowing, with a thirty-year branching ancestry tree.
+template: splash
+sidebar:
+  order: 10
+hero:
+  tagline: Twenty-seven distros and the thirty-year ancestry tree that branches them all from one kernel.
+---
+
+import { Icon } from 'astro-icon/components';
+import AncestryTree from '../../../components/AncestryTree.astro';
+
+{/*
+  Same coupling rules as the homepage "My stack" cards — see the comment
+  block at the top of src/content/docs/index.mdx. Per distro card below
+  you may need to touch up to four places when adding or swapping one:
+
+    1. <a class="distro-card i-<slug>" href="…">  external destination + slug
+    2. <Icon name="simple-icons:…">                iconify slug
+    3. <h3 class="distro-name"> + <p class="distro-tag"> + pills   visible copy
+    4. .distro-card.i-<slug>  brand color rule in src/styles/custom.css
+*/}
+
+Linux is one kernel and a thousand distributions, but the lineage is short. Almost every distro you'll meet descends from one of a handful of roots. Hover any card, and scroll to the bottom for the whole branching tree.
+
+## Debian family
+
+`apt` + `.deb`. Conservative release cadence at the root, fast and friendly at the edges. The biggest family by user count.
+
+<div class="distro-grid">
+  <a class="distro-card i-debian" href="https://www.debian.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:debian" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Debian</h3>
+      <p class="distro-tag">The granddaddy. Glacially stable, conservative to a fault.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">2-year cycle</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-ubuntu" href="https://ubuntu.com" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:ubuntu" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Ubuntu</h3>
+      <p class="distro-tag">The default Linux. Canonical's polished take on Debian.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">6-month + LTS</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-linuxmint" href="https://linuxmint.com" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:linuxmint" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Linux Mint</h3>
+      <p class="distro-tag">The beginner's onramp. Ubuntu without the rough edges.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">tracks LTS</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-popos" href="https://pop.system76.com" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:popos" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Pop!_OS</h3>
+      <p class="distro-tag">Tiling-friendly Ubuntu, by the System76 hardware folks.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">tracks LTS</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-kalilinux" href="https://www.kali.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:kalilinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Kali</h3>
+      <p class="distro-tag">Pentesting and red-team work, with the toolkit pre-loaded.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-tails" href="https://tails.net" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:tails" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Tails</h3>
+      <p class="distro-tag">Amnesic. Boots from USB to RAM, routes through Tor, leaves no trace.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">live OS</span>
+        <span class="distro-pill">Tor by default</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-whonix" href="https://www.whonix.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="lucide:network" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Whonix</h3>
+      <p class="distro-tag">Two-VM Tor isolation. Gateway routes; Workstation never sees your IP.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">two-VM</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-kodachi" href="https://www.digi77.com/linux-kodachi/" target="_blank" rel="noopener noreferrer">
+    <Icon name="lucide:shield" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Kodachi</h3>
+      <p class="distro-tag">Xubuntu plus Tor plus VPN. Aggressive privacy hardening out of the box.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">live or fixed</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+## Red Hat family
+
+`dnf` + `.rpm`. Server-shaped. Where new kernel features and SELinux work usually land first.
+
+<div class="distro-grid">
+  <a class="distro-card i-fedora" href="https://fedoraproject.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:fedora" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Fedora</h3>
+      <p class="distro-tag">Where new Linux features land first. Six-month tick.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">6-month</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-redhat" href="https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:redhat" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">RHEL</h3>
+      <p class="distro-tag">Paid enterprise. The standard most servers run on.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">10-year LTS</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-rockylinux" href="https://rockylinux.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:rockylinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Rocky Linux</h3>
+      <p class="distro-tag">Free RHEL clone. Bug-for-bug compatible, community-run.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">tracks RHEL</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-almalinux" href="https://almalinux.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:almalinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">AlmaLinux</h3>
+      <p class="distro-tag">The other free RHEL clone. CloudLinux-backed.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">tracks RHEL</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-nobara" href="https://nobaraproject.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="lucide:gamepad-2" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Nobara</h3>
+      <p class="distro-tag">Fedora for gamers. Patches in upstream's blind spots.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">tracks Fedora</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-bazzite" href="https://bazzite.gg" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:steamdeck" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Bazzite</h3>
+      <p class="distro-tag">Fedora atomic, tuned for the Steam Deck and gaming HTPCs.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">rpm-ostree</span>
+        <span class="distro-pill">atomic</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-opensuse" href="https://www.opensuse.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:opensuse" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">openSUSE</h3>
+      <p class="distro-tag">RPM-based but its own thing. Tumbleweed rolls; Leap is fixed.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">zypper</span>
+        <span class="distro-pill">rolling / fixed</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-qubesos" href="https://www.qubes-os.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:qubesos" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Qubes OS</h3>
+      <p class="distro-tag">Security by compartment. Every task in its own Xen VM, dom0 is Fedora.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">Xen + Fedora</span>
+        <span class="distro-pill">isolation</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+## Arch family
+
+`pacman` + the AUR. Rolling release. The wiki is the operating system.
+
+<div class="distro-grid">
+  <a class="distro-card i-archlinux" href="https://archlinux.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:archlinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Arch</h3>
+      <p class="distro-tag">DIY from a base install. The wiki is the OS.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pacman</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-manjaro" href="https://manjaro.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:manjaro" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Manjaro</h3>
+      <p class="distro-tag">Arch with training wheels and curated repos.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pacman</span>
+        <span class="distro-pill">rolling, gated</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-endeavouros" href="https://endeavouros.com" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:endeavouros" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">EndeavourOS</h3>
+      <p class="distro-tag">Arch with a friendly installer. Otherwise vanilla.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pacman</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-cachyos" href="https://cachyos.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:cachyos" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">CachyOS</h3>
+      <p class="distro-tag">Performance-tuned Arch. Custom kernel, x86-64-v3/v4 binaries.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pacman</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-garudalinux" href="https://garudalinux.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:garudalinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Garuda Linux</h3>
+      <p class="distro-tag">Arch with Dragonized KDE, BTRFS snapshots, and gaming-friendly defaults.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pacman</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-chimeraos" href="https://chimeraos.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="lucide:gamepad-2" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">ChimeraOS</h3>
+      <p class="distro-tag">Console-style Arch. Boots straight into Steam Big Picture.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pacman</span>
+        <span class="distro-pill">immutable</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-steamos" href="https://store.steampowered.com/steamos/" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:steam" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">SteamOS</h3>
+      <p class="distro-tag">Valve's gaming OS. Arch-based since v3 — what powers the Steam Deck.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pacman</span>
+        <span class="distro-pill">immutable</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+## Independent
+
+No common ancestor. Each invented its own packaging, init, or philosophy.
+
+<div class="distro-grid">
+  <a class="distro-card i-gentoo" href="https://www.gentoo.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:gentoo" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Gentoo</h3>
+      <p class="distro-tag">Compile everything from source. Maximum control, slow installs.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">portage</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-nixos" href="https://nixos.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:nixos" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">NixOS</h3>
+      <p class="distro-tag">Declarative everything. Reproducible, atomic, weird in a good way.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">nix</span>
+        <span class="distro-pill">rolling / fixed</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-slackware" href="http://www.slackware.com" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:slackware" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Slackware</h3>
+      <p class="distro-tag">The oldest surviving distro. UNIX-y, opinionated, slow-moving.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">pkgtool</span>
+        <span class="distro-pill">slow</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-alpinelinux" href="https://alpinelinux.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:alpinelinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Alpine</h3>
+      <p class="distro-tag">Tiny. musl + busybox. The default base image for containers.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apk</span>
+        <span class="distro-pill">rolling / fixed</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+## Thirty years of distros, branched
+
+One kernel at the top, thirty-two years running down the side, every distro above plotted at the year it first shipped with a line back to its parent. Slackware and Debian split off first in 1993, Red&nbsp;Hat Linux in 1994, Arch and Gentoo shortly after — and then four separate explosions from Debian, Fedora, RHEL, and Arch that cover nearly everything you can install today. The one dashed line is Red&nbsp;Hat Linux (1994–2003), which doesn't exist as a product anymore but fathered both Fedora and RHEL before it stopped.
+
+<AncestryTree />
+
+<small class="ancestry-note">A few branches simplified. Qubes&nbsp;OS runs on a Fedora dom0 but its real engine is Xen; SteamOS&nbsp;1–2 (2013) was Debian-based before the Steam&nbsp;Deck rebooted it on Arch in 2022, so it's shown at its current ancestry.</small>
+
+---
+
+Most of the rest of the Linux world is a fork of a fork of one of those. If you can place a new distro in this map within thirty seconds — its family, its package manager, its release cadence, its decade — you already know most of what makes it different.

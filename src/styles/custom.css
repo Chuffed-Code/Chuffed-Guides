@@ -235,3 +235,198 @@
 .i-hyprland { color: #00B4D9; }
 .i-obsidian { color: #7C3AED; }
 .i-signal { color: #3A76F0; }
+
+/* ===========================================================
+   Visual guide: "Linux distros at a glance"
+   Lives at /visuals/linux-distros/. Pure CSS — staggered
+   fade-in on load, hover lift, brand-colored glow.
+   =========================================================== */
+
+.distro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.85rem;
+  margin: 1rem 0 2.25rem;
+}
+
+.distro-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem;
+  border-radius: 10px;
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+  animation: distro-fade-in 0.5s ease-out backwards;
+}
+
+/* Brand-colored glow swept across the card on hover. The radial
+   gradient fades up from 0 → ~0.18 opacity using --distro-color
+   set per-card below. */
+.distro-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 100% 0%,
+    var(--distro-color, transparent) 0%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events: none;
+}
+
+.distro-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--distro-color, var(--sl-color-gray-4));
+  box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.45);
+  background: var(--sl-color-gray-5);
+}
+
+.distro-card:hover::before {
+  opacity: 0.18;
+}
+
+.distro-card:focus-visible {
+  outline: 2px solid var(--distro-color, var(--sl-color-text-accent));
+  outline-offset: 2px;
+}
+
+.distro-card .distro-icon {
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--distro-color, var(--sl-color-gray-2));
+  transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.distro-card:hover .distro-icon {
+  transform: scale(1.12) rotate(-4deg);
+}
+
+.distro-meta {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Override Starlight's default heading anchor & spacing for the
+   small h3 inside cards. */
+.distro-card .distro-name {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.2rem;
+  color: var(--sl-color-white);
+}
+
+.distro-card .distro-tag {
+  font-size: 0.82rem;
+  color: var(--sl-color-gray-2);
+  line-height: 1.4;
+  margin: 0 0 0.6rem;
+}
+
+.distro-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.distro-pill {
+  display: inline-block;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  background: var(--sl-color-gray-5);
+  color: var(--sl-color-gray-2);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.distro-card:hover .distro-pill {
+  background: var(--sl-color-gray-4);
+}
+
+@keyframes distro-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger entrance per grid (counter resets at each .distro-grid). */
+.distro-grid > .distro-card:nth-child(1) { animation-delay: 0.05s; }
+.distro-grid > .distro-card:nth-child(2) { animation-delay: 0.10s; }
+.distro-grid > .distro-card:nth-child(3) { animation-delay: 0.15s; }
+.distro-grid > .distro-card:nth-child(4) { animation-delay: 0.20s; }
+.distro-grid > .distro-card:nth-child(5) { animation-delay: 0.25s; }
+.distro-grid > .distro-card:nth-child(n+6) { animation-delay: 0.30s; }
+
+/* Honor the user's reduced-motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  .distro-card,
+  .distro-card .distro-icon,
+  .distro-card::before {
+    animation: none;
+    transition: none;
+  }
+  .distro-card:hover,
+  .distro-card:hover .distro-icon {
+    transform: none;
+  }
+}
+
+/* Per-distro brand color. Drives the icon, the hover border, the
+   focus ring, and the corner glow. Matches the .i-<slug> on each
+   <a class="distro-card …"> in src/content/docs/visuals/linux-distros.mdx
+   — keep that list and this list in sync. */
+.distro-card.i-debian      { --distro-color: #A81D33; }
+.distro-card.i-ubuntu      { --distro-color: #E95420; }
+.distro-card.i-linuxmint   { --distro-color: #87CF3E; }
+.distro-card.i-popos       { --distro-color: #48B9C7; }
+.distro-card.i-kalilinux   { --distro-color: #557C94; }
+
+.distro-card.i-fedora      { --distro-color: #51A2DA; }
+.distro-card.i-redhat      { --distro-color: #EE0000; }
+.distro-card.i-rockylinux  { --distro-color: #10B981; }
+.distro-card.i-almalinux   { --distro-color: #0D597F; }
+.distro-card.i-opensuse    { --distro-color: #73BA25; }
+
+.distro-card.i-nobara      { --distro-color: #EE5396; }
+.distro-card.i-bazzite     { --distro-color: #EA5B0C; }
+.distro-card.i-qubesos     { --distro-color: #3874D8; }
+
+.distro-card.i-archlinux    { --distro-color: #1793D1; }
+.distro-card.i-manjaro      { --distro-color: #35BF5C; }
+.distro-card.i-endeavouros  { --distro-color: #7B3F94; }
+.distro-card.i-cachyos      { --distro-color: #00C9A7; }
+.distro-card.i-garudalinux  { --distro-color: #2EB398; }
+.distro-card.i-chimeraos    { --distro-color: #FF8800; }
+.distro-card.i-steamos      { --distro-color: #66C0F4; }
+
+.distro-card.i-gentoo      { --distro-color: #54487A; }
+.distro-card.i-nixos       { --distro-color: #5277C3; }
+.distro-card.i-slackware   { --distro-color: #2A5EA8; }
+.distro-card.i-alpinelinux { --distro-color: #0D597F; }
+.distro-card.i-tails       { --distro-color: #56347C; }
+.distro-card.i-whonix      { --distro-color: #66BB44; }
+.distro-card.i-kodachi     { --distro-color: #B71C1C; }
+

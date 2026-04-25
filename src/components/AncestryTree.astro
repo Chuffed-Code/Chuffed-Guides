@@ -1,0 +1,410 @@
+---
+/*
+ * AncestryTree.astro — single SVG, top-down branching tree of 27 Linux
+ * distributions descending from the 1991 kernel.
+ *
+ * Layout:
+ *   - Y axis is time (linear, 1991 at top → 2024 at bottom, 18 px/year)
+ *   - Each distro owns one vertical lane (X), ordered depth-first so siblings
+ *     stay adjacent and branch crossings are minimal
+ *   - A distro appears as a colored dot at its founding year, with a colored
+ *     lifeline continuing down to the present (dashed + capped for distros
+ *     that no longer ship, e.g. Red Hat Linux 1994–2003)
+ *   - Parent → child forks are drawn as a short horizontal branch at the
+ *     child's founding year, linking the parent lane into the child lane
+ *   - Names sit in a label band under the chart (rotated 90° so a 42 px
+ *     lane can hold any name)
+ *
+ * Maintenance:
+ *   - Adding a distro: push a new entry to NODES with an unused `lane`
+ *     index. Keep the list in depth-first order (parents immediately followed
+ *     by their descendants) so the generated tree keeps branches tidy.
+ *   - If a new brand color isn't yet in the grid on linux-distros.mdx, you
+ *     can still set `color` here — the SVG is self-contained.
+ */
+
+type Node = {
+  id: string;
+  name: string;
+  year: number;
+  parent: string | null;
+  lane: number;
+  color: string;
+  href?: string | null;
+  until?: number;
+};
+
+const NODES: Node[] = [
+  { id: 'slackware',  name: 'Slackware',     year: 1993, parent: null,      lane: 0,  color: '#2A5EA8', href: 'http://www.slackware.com' },
+  { id: 'debian',     name: 'Debian',        year: 1993, parent: null,      lane: 1,  color: '#A81D33', href: 'https://www.debian.org' },
+  { id: 'ubuntu',     name: 'Ubuntu',        year: 2004, parent: 'debian',  lane: 2,  color: '#E95420', href: 'https://ubuntu.com' },
+  { id: 'mint',       name: 'Linux Mint',    year: 2006, parent: 'ubuntu',  lane: 3,  color: '#87CF3E', href: 'https://linuxmint.com' },
+  { id: 'pop',        name: 'Pop!_OS',       year: 2017, parent: 'ubuntu',  lane: 4,  color: '#48B9C7', href: 'https://pop.system76.com' },
+  { id: 'kodachi',    name: 'Kodachi',       year: 2013, parent: 'ubuntu',  lane: 5,  color: '#B71C1C', href: 'https://www.digi77.com/linux-kodachi/' },
+  { id: 'tails',      name: 'Tails',         year: 2009, parent: 'debian',  lane: 6,  color: '#56347C', href: 'https://tails.net' },
+  { id: 'whonix',     name: 'Whonix',        year: 2012, parent: 'debian',  lane: 7,  color: '#6BA73A', href: 'https://www.whonix.org' },
+  { id: 'kali',       name: 'Kali',          year: 2013, parent: 'debian',  lane: 8,  color: '#557C94', href: 'https://www.kali.org' },
+  { id: 'redhat',     name: 'Red Hat Linux', year: 1994, parent: null,      lane: 9,  color: '#B0B0B0', until: 2003 },
+  { id: 'fedora',     name: 'Fedora',        year: 2003, parent: 'redhat',  lane: 10, color: '#51A2DA', href: 'https://fedoraproject.org' },
+  { id: 'nobara',     name: 'Nobara',        year: 2022, parent: 'fedora',  lane: 11, color: '#EE5396', href: 'https://nobaraproject.org' },
+  { id: 'bazzite',    name: 'Bazzite',       year: 2023, parent: 'fedora',  lane: 12, color: '#EA5B0C', href: 'https://bazzite.gg' },
+  { id: 'qubes',      name: 'Qubes OS',      year: 2010, parent: 'fedora',  lane: 13, color: '#3874D8', href: 'https://www.qubes-os.org' },
+  { id: 'rhel',       name: 'RHEL',          year: 2002, parent: 'redhat',  lane: 14, color: '#EE0000', href: 'https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux' },
+  { id: 'rocky',      name: 'Rocky Linux',   year: 2021, parent: 'rhel',    lane: 15, color: '#10B981', href: 'https://rockylinux.org' },
+  { id: 'alma',       name: 'AlmaLinux',     year: 2021, parent: 'rhel',    lane: 16, color: '#0D597F', href: 'https://almalinux.org' },
+  { id: 'opensuse',   name: 'openSUSE',      year: 2005, parent: null,      lane: 17, color: '#73BA25', href: 'https://www.opensuse.org' },
+  { id: 'gentoo',     name: 'Gentoo',        year: 2002, parent: null,      lane: 18, color: '#54487A', href: 'https://www.gentoo.org' },
+  { id: 'arch',       name: 'Arch',          year: 2002, parent: null,      lane: 19, color: '#1793D1', href: 'https://archlinux.org' },
+  { id: 'manjaro',    name: 'Manjaro',       year: 2011, parent: 'arch',    lane: 20, color: '#35BF5C', href: 'https://manjaro.org' },
+  { id: 'endeavour',  name: 'EndeavourOS',   year: 2019, parent: 'arch',    lane: 21, color: '#7B3F94', href: 'https://endeavouros.com' },
+  { id: 'cachyos',    name: 'CachyOS',       year: 2021, parent: 'arch',    lane: 22, color: '#00C9A7', href: 'https://cachyos.org' },
+  { id: 'garuda',     name: 'Garuda',        year: 2020, parent: 'arch',    lane: 23, color: '#2EB398', href: 'https://garudalinux.org' },
+  { id: 'chimera',    name: 'ChimeraOS',     year: 2019, parent: 'arch',    lane: 24, color: '#FF8800', href: 'https://chimeraos.org' },
+  { id: 'steamos',    name: 'SteamOS',       year: 2022, parent: 'arch',    lane: 25, color: '#66C0F4', href: 'https://store.steampowered.com/steamos/' },
+  { id: 'nixos',      name: 'NixOS',         year: 2003, parent: null,      lane: 26, color: '#5277C3', href: 'https://nixos.org' },
+  { id: 'alpine',     name: 'Alpine',        year: 2005, parent: null,      lane: 27, color: '#0D597F', href: 'https://alpinelinux.org' },
+];
+
+// Layout constants
+const Y0 = 1991;
+const Y_SCALE = 18;
+const TOP_PAD = 30;
+const KERNEL_Y = TOP_PAD;
+const Y0_Y = TOP_PAD + 50;
+const LANE_W = 42;
+const LEFT_PAD = 64;
+const RIGHT_PAD = 36;
+const LABEL_BAND = 140;
+const YEARS_SPAN = 33;
+const LANES = NODES.length;
+const SVG_W = LEFT_PAD + LANES * LANE_W + RIGHT_PAD;
+const BOTTOM_Y = Y0_Y + YEARS_SPAN * Y_SCALE;
+const SVG_H = BOTTOM_Y + LABEL_BAND;
+
+const yToY = (y: number) => Y0_Y + (y - Y0) * Y_SCALE;
+const laneToX = (l: number) => LEFT_PAD + l * LANE_W + LANE_W / 2;
+
+const nodeMap = new Map(NODES.map((n) => [n.id, n]));
+const eventYears = Array.from(new Set(NODES.map((n) => n.year))).sort((a, b) => a - b);
+
+const rootNodes = NODES.filter((n) => n.parent === null);
+const rootLanes = rootNodes.map((n) => n.lane);
+const trunkX1 = laneToX(Math.min(...rootLanes));
+const trunkX2 = laneToX(Math.max(...rootLanes));
+const KERNEL_X = (trunkX1 + trunkX2) / 2;
+
+const staggerMs = (year: number) => (year - Y0) * 35;
+---
+
+<figure class="ancestry-figure">
+  <div class="ancestry-scroll" tabindex="0" aria-label="Scroll horizontally to see the full tree">
+    <svg
+      viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+      role="img"
+      aria-label={`Branching ancestry tree of ${NODES.filter((n) => !n.until).length} Linux distributions and their historical ancestor, all descending from the 1991 kernel.`}
+      class="ancestry-svg"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Year gridlines — one faint horizontal line per event year */}
+      {eventYears.map((y) => (
+        <line
+          x1={LEFT_PAD - 14}
+          x2={SVG_W - RIGHT_PAD + 4}
+          y1={yToY(y)}
+          y2={yToY(y)}
+          class="ancestry-gridline"
+        />
+      ))}
+
+      {/* Year axis labels */}
+      {eventYears.map((y) => (
+        <text
+          x={LEFT_PAD - 18}
+          y={yToY(y) + 3.5}
+          text-anchor="end"
+          class="ancestry-year-label"
+        >{y}</text>
+      ))}
+
+      {/* Kernel trunk — horizontal bar spanning the lanes of all root distros */}
+      <line
+        x1={trunkX1}
+        x2={trunkX2}
+        y1={KERNEL_Y + 20}
+        y2={KERNEL_Y + 20}
+        class="ancestry-kernel-trunk"
+      />
+
+      {/* Kernel chip */}
+      <g class="ancestry-kernel" transform={`translate(${KERNEL_X}, ${KERNEL_Y})`}>
+        <rect x={-78} y={-14} width={156} height={30} rx={7} class="ancestry-kernel-rect" />
+        <text x={0} y={6} text-anchor="middle" class="ancestry-kernel-text">Linux kernel · 1991</text>
+      </g>
+
+      {/* Vertical "approach" lines dropping from the trunk to each root distro's founding year */}
+      {rootNodes.map((n) => (
+        <line
+          x1={laneToX(n.lane)}
+          x2={laneToX(n.lane)}
+          y1={KERNEL_Y + 20}
+          y2={yToY(n.year)}
+          class="ancestry-approach"
+          style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year)}ms;`}
+        />
+      ))}
+
+      {/* Horizontal branch connectors for non-root distros — from parent lane to child lane at the child's founding year */}
+      {NODES.filter((n) => n.parent !== null).map((n) => {
+        const p = nodeMap.get(n.parent as string)!;
+        const cx = laneToX(n.lane);
+        const cy = yToY(n.year);
+        const px = laneToX(p.lane);
+        const x1 = Math.min(px, cx);
+        const x2 = Math.max(px, cx);
+        return (
+          <line
+            x1={x1}
+            x2={x2}
+            y1={cy}
+            y2={cy}
+            class="ancestry-branch"
+            style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year)}ms;`}
+          />
+        );
+      })}
+
+      {/* Vertical lifelines — each distro's line from its founding year to present (or its end year) */}
+      {NODES.map((n) => {
+        const cx = laneToX(n.lane);
+        const top = yToY(n.year);
+        const end = n.until ? yToY(n.until) : BOTTOM_Y;
+        return (
+          <line
+            x1={cx}
+            x2={cx}
+            y1={top}
+            y2={end}
+            class={`ancestry-lifeline${n.until ? ' is-discontinued' : ''}`}
+            style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year)}ms;`}
+          />
+        );
+      })}
+
+      {/* Birth dots, end-of-life markers, and rotated name labels */}
+      {NODES.map((n) => {
+        const cx = laneToX(n.lane);
+        const cy = yToY(n.year);
+        const labelAnchorY = (n.until ? yToY(n.until) : BOTTOM_Y) + 10;
+        const labelText = n.until ? `${n.name} · ${n.year}–${n.until}` : `${n.name} · ${n.year}`;
+        const inner = (
+          <g
+            class={`ancestry-node${n.until ? ' is-discontinued' : ''}`}
+            style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year) + 120}ms;`}
+          >
+            <circle cx={cx} cy={cy} r={4.5} class="ancestry-dot" />
+            {n.until && (
+              <circle cx={cx} cy={yToY(n.until)} r={3.5} class="ancestry-dot-end" />
+            )}
+            <text
+              x={cx}
+              y={labelAnchorY}
+              text-anchor="start"
+              class="ancestry-label"
+              transform={`rotate(90 ${cx} ${labelAnchorY})`}
+            >{labelText}</text>
+          </g>
+        );
+        return n.href ? (
+          <a href={n.href} target="_blank" rel="noopener noreferrer" class="ancestry-link">
+            {inner}
+          </a>
+        ) : inner;
+      })}
+    </svg>
+  </div>
+  <figcaption class="ancestry-caption">
+    Trace any lifeline upward — every distro connects back to the 1991 kernel through one to three forks. Solid lines are shipping today; the dashed line is Red&nbsp;Hat Linux, which stopped in 2003 after fathering both Fedora and RHEL.
+  </figcaption>
+</figure>
+
+<style>
+  .ancestry-figure {
+    margin: 1.5rem 0 0.5rem;
+    padding: 0;
+  }
+  .ancestry-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.25rem 0 0.75rem;
+    scrollbar-width: thin;
+    border-radius: 0.5rem;
+  }
+  .ancestry-scroll:focus-visible {
+    outline: 2px solid var(--sl-color-accent, #58a6ff);
+    outline-offset: 3px;
+  }
+  .ancestry-svg {
+    display: block;
+    min-width: 1276px;
+    width: 100%;
+    height: auto;
+    font-family: var(--__sl-font, ui-sans-serif, system-ui, sans-serif);
+  }
+  .ancestry-caption {
+    margin: 0.6rem auto 0;
+    max-width: 62ch;
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-3);
+    text-align: center;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* Axis */
+  .ancestry-gridline {
+    stroke: var(--sl-color-gray-5);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+    opacity: 0.3;
+  }
+  .ancestry-year-label {
+    font-family: var(--__sl-font-mono, ui-monospace, SFMono-Regular, monospace);
+    font-size: 10.5px;
+    font-weight: 600;
+    fill: var(--sl-color-gray-3);
+    letter-spacing: 0.01em;
+  }
+
+  /* Kernel */
+  .ancestry-kernel-trunk {
+    stroke: #FCC624;
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 3px rgba(252, 198, 36, 0.5));
+    --end-opacity: 0.9;
+    animation: ancestry-fade 0.6s ease-out backwards;
+  }
+  .ancestry-kernel {
+    --end-opacity: 1;
+    animation: ancestry-fade 0.5s ease-out backwards;
+  }
+  .ancestry-kernel-rect {
+    fill: color-mix(in srgb, #FCC624 16%, transparent);
+    stroke: #FCC624;
+    stroke-width: 1.5;
+  }
+  .ancestry-kernel-text {
+    fill: #FCC624;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  :global(:root[data-theme='light']) .ancestry-kernel-text { fill: #7a5800; }
+  :global(:root[data-theme='light']) .ancestry-kernel-rect { fill: color-mix(in srgb, #FCC624 25%, #fff); }
+
+  /* Lines share --dist-color from inline style */
+  .ancestry-approach,
+  .ancestry-branch,
+  .ancestry-lifeline {
+    stroke: var(--dist-color);
+    fill: none;
+    stroke-linecap: round;
+  }
+  .ancestry-approach {
+    stroke-width: 1.75;
+    --end-opacity: 0.6;
+    opacity: var(--end-opacity);
+    animation: ancestry-fade 0.6s ease-out backwards;
+  }
+  .ancestry-branch {
+    stroke-width: 2.25;
+    --end-opacity: 0.9;
+    opacity: var(--end-opacity);
+    filter: drop-shadow(0 0 2px color-mix(in srgb, var(--dist-color) 40%, transparent));
+    animation: ancestry-fade 0.55s ease-out backwards;
+  }
+  .ancestry-lifeline {
+    stroke-width: 2;
+    --end-opacity: 0.55;
+    opacity: var(--end-opacity);
+    animation: ancestry-fade 0.7s ease-out backwards;
+  }
+  .ancestry-lifeline.is-discontinued {
+    stroke-dasharray: 4 4;
+    --end-opacity: 0.45;
+  }
+
+  /* Dots */
+  .ancestry-node {
+    --end-opacity: 1;
+    animation: ancestry-fade 0.4s ease-out backwards;
+  }
+  .ancestry-dot {
+    fill: var(--dist-color);
+    stroke: var(--sl-color-bg, #17181c);
+    stroke-width: 1.5;
+    transition: r 200ms ease, filter 200ms ease;
+  }
+  .ancestry-dot-end {
+    fill: var(--sl-color-bg, #17181c);
+    stroke: var(--dist-color);
+    stroke-width: 1.5;
+    stroke-dasharray: 1.5 1.5;
+    opacity: 0.7;
+  }
+  :global(:root[data-theme='light']) .ancestry-dot { stroke: #fff; }
+  :global(:root[data-theme='light']) .ancestry-dot-end { fill: #fff; }
+
+  /* Labels */
+  .ancestry-label {
+    fill: var(--dist-color);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+    transition: font-weight 180ms ease, filter 180ms ease;
+  }
+  .ancestry-node.is-discontinued .ancestry-label {
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  /* Hover / focus: highlight the hovered distro */
+  .ancestry-link {
+    outline: none;
+    cursor: pointer;
+  }
+  .ancestry-link:focus-visible .ancestry-dot,
+  .ancestry-link:hover .ancestry-dot {
+    r: 6.5;
+    filter: drop-shadow(0 0 6px var(--dist-color));
+  }
+  .ancestry-link:focus-visible .ancestry-label,
+  .ancestry-link:hover .ancestry-label {
+    font-weight: 800;
+    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--dist-color) 70%, transparent));
+  }
+
+  /* Light-mode axis tuning */
+  :global(:root[data-theme='light']) .ancestry-gridline {
+    stroke: var(--sl-color-gray-4);
+    opacity: 0.45;
+  }
+
+  /* Animations */
+  @keyframes ancestry-fade {
+    from { opacity: 0; }
+    to   { opacity: var(--end-opacity, 1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ancestry-kernel,
+    .ancestry-kernel-trunk,
+    .ancestry-approach,
+    .ancestry-branch,
+    .ancestry-lifeline,
+    .ancestry-node {
+      animation: none !important;
+    }
+  }
+</style>
