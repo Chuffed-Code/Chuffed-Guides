@@ -1,10 +1,8 @@
 ---
-title: Visual guides
-description: Standalone interactive pieces — one concept per page.
+title: Sketches
+description: Short standalone explainers — single-concept pieces that don't belong inside any larger guide. Each one opens, makes its point, and gets out of the way.
 ---
 
-This section hosts standalone visual guides: Python-generated diagrams, live HTML demos, and other single-concept interactive pieces. Each one opens, makes its point, and gets out of the way. No prerequisites, no long read.
+Short standalone explainers — single-concept pieces that don't belong inside any larger guide. Each one opens, makes its point, and gets out of the way.
 
-## Available now
-
-- [**Linux distros at a glance**](./linux-distros/) — twenty-seven distros worth knowing, grouped by family, with a branching thirty-year ancestry tree.
+Nothing here yet — first proper sketch coming soon.

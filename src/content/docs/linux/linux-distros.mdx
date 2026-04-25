@@ -1,11 +1,11 @@
 ---
 title: Linux distros at a glance
-description: A field guide to twenty-seven Linux distributions worth knowing, with a thirty-year branching ancestry tree.
+description: A field guide to thirty-seven Linux distributions worth knowing, with a branching ancestry tree from UNIX and the kernel to today.
 template: splash
 sidebar:
-  order: 10
+  order: 20
 hero:
-  tagline: Twenty-seven distros and the thirty-year ancestry tree that branches them all from one kernel.
+  tagline: Thirty-seven distros and the branching ancestry tree that ties them to one kernel (and the proto stack above it).
 ---
 
 import { Icon } from 'astro-icon/components';
@@ -102,7 +102,7 @@ Linux is one kernel and a thousand distributions, but the lineage is short. Almo
   </a>
 
   <a class="distro-card i-whonix" href="https://www.whonix.org" target="_blank" rel="noopener noreferrer">
-    <Icon name="lucide:network" class="distro-icon" />
+    <img src={`${import.meta.env.BASE_URL}logos/distro/whonix-standard.svg`} alt="Whonix logo" class="distro-icon distro-icon-image" loading="lazy" />
     <div class="distro-meta">
       <h3 class="distro-name">Whonix</h3>
       <p class="distro-tag">Two-VM Tor isolation. Gateway routes; Workstation never sees your IP.</p>
@@ -113,14 +113,50 @@ Linux is one kernel and a thousand distributions, but the lineage is short. Almo
     </div>
   </a>
 
-  <a class="distro-card i-kodachi" href="https://www.digi77.com/linux-kodachi/" target="_blank" rel="noopener noreferrer">
-    <Icon name="lucide:shield" class="distro-icon" />
+  <a class="distro-card i-kodachi" href="https://github.com/WMAL/Linux-Kodachi" target="_blank" rel="noopener noreferrer">
+    <img src={`${import.meta.env.BASE_URL}logos/distro/kodachi-avatar.png`} alt="Kodachi logo" class="distro-icon distro-icon-image" loading="lazy" />
     <div class="distro-meta">
       <h3 class="distro-name">Kodachi</h3>
       <p class="distro-tag">Xubuntu plus Tor plus VPN. Aggressive privacy hardening out of the box.</p>
       <div class="distro-pills">
         <span class="distro-pill">apt</span>
         <span class="distro-pill">live or fixed</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-zorin" href="https://zorin.com/os/" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:zorin" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Zorin OS</h3>
+      <p class="distro-tag">Ubuntu-based, Windows- and macOS-like layouts for switchers. Polished and beginner-friendly.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">6-month + LTS</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-elementary" href="https://elementary.io" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:elementary" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Elementary OS</h3>
+      <p class="distro-tag">Design-first Ubuntu derivative. Pantheon desktop, pay-what-you-want model, app ecosystem.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">6-month</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-mxlinux" href="https://mxlinux.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:mxlinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">MX Linux</h3>
+      <p class="distro-tag">Debian Stable base, Xfce by default, antiX tooling. Huge mindshare in the mid-2010s and still.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">apt</span>
+        <span class="distro-pill">fixed + backports</span>
       </div>
     </div>
   </a>
@@ -155,6 +191,30 @@ Linux is one kernel and a thousand distributions, but the lineage is short. Almo
     </div>
   </a>
 
+  <a class="distro-card i-centos" href="https://en.wikipedia.org/wiki/CentOS" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:centos" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">CentOS Linux</h3>
+      <p class="distro-tag">Free RHEL rebuild (2004–2020). Superseded upstream by CentOS&nbsp;Stream — shown for history.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">defunct</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-centosstream" href="https://www.centos.org/centos-stream" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:centos" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">CentOS Stream</h3>
+      <p class="distro-tag">Rolling preview of next RHEL. Successor story to CentOS&nbsp;Linux — for CI and early adopters.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">tracks RHEL-next</span>
+      </div>
+    </div>
+  </a>
+
   <a class="distro-card i-rockylinux" href="https://rockylinux.org" target="_blank" rel="noopener noreferrer">
     <Icon name="simple-icons:rockylinux" class="distro-icon" />
     <div class="distro-meta">
@@ -180,7 +240,7 @@ Linux is one kernel and a thousand distributions, but the lineage is short. Almo
   </a>
 
   <a class="distro-card i-nobara" href="https://nobaraproject.org" target="_blank" rel="noopener noreferrer">
-    <Icon name="lucide:gamepad-2" class="distro-icon" />
+    <Icon name="simple-icons:nobaralinux" class="distro-icon" />
     <div class="distro-meta">
       <h3 class="distro-name">Nobara</h3>
       <p class="distro-tag">Fedora for gamers. Patches in upstream's blind spots.</p>
@@ -199,6 +259,42 @@ Linux is one kernel and a thousand distributions, but the lineage is short. Almo
       <div class="distro-pills">
         <span class="distro-pill">rpm-ostree</span>
         <span class="distro-pill">atomic</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-mandriva" href="https://en.wikipedia.org/wiki/Mandriva_Linux" target="_blank" rel="noopener noreferrer">
+    <img src={`${import.meta.env.BASE_URL}logos/distro/mandriva.svg`} alt="Mandriva logo" class="distro-icon distro-icon-image" loading="lazy" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Mandriva</h3>
+      <p class="distro-tag">Mandrake + Conectiva (2005). RPM + urpmi. Bankrupt 2011; lineage split to Mageia and OpenMandriva.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">urpmi</span>
+        <span class="distro-pill">defunct</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-mageia" href="https://www.mageia.org/en/" target="_blank" rel="noopener noreferrer">
+    <img src={`${import.meta.env.BASE_URL}logos/distro/mageia.svg`} alt="Mageia logo" class="distro-icon distro-icon-image" loading="lazy" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Mageia</h3>
+      <p class="distro-tag">Community fork when Mandriva faltered (2010). Independent non-profit, classic desktop focus.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">fixed</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-openmandriva" href="https://www.openmandriva.org/" target="_blank" rel="noopener noreferrer">
+    <img src={`${import.meta.env.BASE_URL}logos/distro/openmandriva.svg`} alt="OpenMandriva logo" class="distro-icon distro-icon-image" loading="lazy" />
+    <div class="distro-meta">
+      <h3 class="distro-name">OpenMandriva</h3>
+      <p class="distro-tag">The other Mandriva successor (2012). Rolling “Cooker”, own tools, carries the RPM urpmi tradition.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">dnf</span>
+        <span class="distro-pill">rolling / fixed</span>
       </div>
     </div>
   </a>
@@ -293,8 +389,8 @@ Linux is one kernel and a thousand distributions, but the lineage is short. Almo
     </div>
   </a>
 
-  <a class="distro-card i-chimeraos" href="https://chimeraos.org" target="_blank" rel="noopener noreferrer">
-    <Icon name="lucide:gamepad-2" class="distro-icon" />
+  <a class="distro-card i-chimeraos" href="https://chimeraos.org/" target="_blank" rel="noopener noreferrer">
+    <img src={`${import.meta.env.BASE_URL}logos/distro/chimeraos.png`} alt="ChimeraOS logo" class="distro-icon distro-icon-image" loading="lazy" />
     <div class="distro-meta">
       <h3 class="distro-name">ChimeraOS</h3>
       <p class="distro-tag">Console-style Arch. Boots straight into Steam Big Picture.</p>
@@ -370,15 +466,106 @@ No common ancestor. Each invented its own packaging, init, or philosophy.
       </div>
     </div>
   </a>
+
+  <a class="distro-card i-voidlinux" href="https://voidlinux.org" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:voidlinux" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Void Linux</h3>
+      <p class="distro-tag">Independent, from-scratch packages. runit by default, musl or glibc, xbps, no systemd.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">xbps</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="distro-card i-solus" href="https://getsol.us" target="_blank" rel="noopener noreferrer">
+    <Icon name="simple-icons:solus" class="distro-icon" />
+    <div class="distro-meta">
+      <h3 class="distro-name">Solus</h3>
+      <p class="distro-tag">Independent desktop-first distro. eopkg packages, Budgie (and others), curated rolling base.</p>
+      <div class="distro-pills">
+        <span class="distro-pill">eopkg</span>
+        <span class="distro-pill">rolling</span>
+      </div>
+    </div>
+  </a>
 </div>
 
 ## Thirty years of distros, branched
 
-One kernel at the top, thirty-two years running down the side, every distro above plotted at the year it first shipped with a line back to its parent. Slackware and Debian split off first in 1993, Red&nbsp;Hat Linux in 1994, Arch and Gentoo shortly after — and then four separate explosions from Debian, Fedora, RHEL, and Arch that cover nearly everything you can install today. The one dashed line is Red&nbsp;Hat Linux (1994–2003), which doesn't exist as a product anymore but fathered both Fedora and RHEL before it stopped.
+UNIX and GNU sit above the timeline; the Linux kernel (1991) is the trunk. Every card above appears on the diagram at its first release year, with edges back to parents — including historical RPM lines (Mandrake → Mandriva → Mageia / OpenMandriva), CentOS&nbsp;Linux → CentOS&nbsp;Stream, and Debian- and Ubuntu-based desktops (Zorin, elementary, MX). Defunct distros are still drawn so the forks make sense.
 
 <AncestryTree />
 
 <small class="ancestry-note">A few branches simplified. Qubes&nbsp;OS runs on a Fedora dom0 but its real engine is Xen; SteamOS&nbsp;1–2 (2013) was Debian-based before the Steam&nbsp;Deck rebooted it on Arch in 2022, so it's shown at its current ancestry.</small>
+
+## Design philosophy + latest update channels
+
+<p class="snapshot-intro">Quick visual snapshot: each chip maps one distro to its core design philosophy and current update channel. Red chips are deprecated branches kept for ancestry context.</p>
+
+<div class="snapshot-graphic" role="img" aria-label="Design philosophy and latest update channels for all distros on this page, with deprecated branches labeled.">
+  <div class="snapshot-legend">
+    <span class="snapshot-dot active"></span> Active line
+    <span class="snapshot-dot deprecated"></span> Deprecated / historical branch
+  </div>
+
+  <h3>Debian lineage</h3>
+  <div class="snapshot-grid">
+    <span class="snapshot-chip"><strong>Debian</strong><em>stability-first</em><code>stable + testing</code></span>
+    <span class="snapshot-chip"><strong>Ubuntu</strong><em>mainstream desktop/server</em><code>LTS + interim</code></span>
+    <span class="snapshot-chip"><strong>Linux Mint</strong><em>beginner desktop UX</em><code>LTS-tracking</code></span>
+    <span class="snapshot-chip"><strong>Pop!_OS</strong><em>developer/workstation</em><code>LTS-tracking</code></span>
+    <span class="snapshot-chip"><strong>Kali</strong><em>offensive security</em><code>rolling</code></span>
+    <span class="snapshot-chip"><strong>Tails</strong><em>amnesic privacy live OS</em><code>privacy-focused releases</code></span>
+    <span class="snapshot-chip"><strong>Whonix</strong><em>Tor VM isolation</em><code>template updates</code></span>
+    <span class="snapshot-chip"><strong>Kodachi</strong><em>hardened privacy desktop</em><code>periodic fixed releases</code></span>
+    <span class="snapshot-chip"><strong>Zorin OS</strong><em>newcomer migration UX</em><code>LTS-based</code></span>
+    <span class="snapshot-chip"><strong>elementary OS</strong><em>design-first desktop</em><code>major + point releases</code></span>
+    <span class="snapshot-chip"><strong>MX Linux</strong><em>lightweight pragmatic desktop</em><code>stable base + backports</code></span>
+  </div>
+
+  <h3>Red Hat lineage</h3>
+  <div class="snapshot-grid">
+    <span class="snapshot-chip is-deprecated"><strong>Red Hat Linux</strong><em>original commercial Linux</em><code>ended (2003)</code></span>
+    <span class="snapshot-chip"><strong>Fedora</strong><em>upstream innovation</em><code>~6-month cadence</code></span>
+    <span class="snapshot-chip"><strong>RHEL</strong><em>enterprise long-term support</em><code>multi-year major + errata</code></span>
+    <span class="snapshot-chip is-deprecated"><strong>CentOS Linux</strong><em>RHEL rebuild</em><code>ended (2020)</code></span>
+    <span class="snapshot-chip"><strong>CentOS Stream</strong><em>RHEL preview stream</em><code>continuous stream</code></span>
+    <span class="snapshot-chip"><strong>Rocky Linux</strong><em>community RHEL-compatible</em><code>RHEL-tracking</code></span>
+    <span class="snapshot-chip"><strong>AlmaLinux</strong><em>enterprise-compatible</em><code>RHEL-tracking</code></span>
+    <span class="snapshot-chip"><strong>Nobara</strong><em>gaming-focused Fedora</em><code>Fedora-tracking</code></span>
+    <span class="snapshot-chip"><strong>Bazzite</strong><em>atomic gaming desktop</em><code>rpm-ostree image updates</code></span>
+    <span class="snapshot-chip is-deprecated"><strong>Mandriva</strong><em>desktop RPM branch</em><code>ended (2015)</code></span>
+    <span class="snapshot-chip"><strong>Mageia</strong><em>community Mandriva successor</em><code>fixed releases</code></span>
+    <span class="snapshot-chip"><strong>OpenMandriva</strong><em>Mandriva successor</em><code>rolling + fixed branches</code></span>
+    <span class="snapshot-chip"><strong>openSUSE</strong><em>community RPM branch</em><code>Tumbleweed / Leap</code></span>
+    <span class="snapshot-chip"><strong>Qubes OS</strong><em>security compartmentalization</em><code>template-driven updates</code></span>
+  </div>
+
+  <h3>Arch lineage</h3>
+  <div class="snapshot-grid">
+    <span class="snapshot-chip"><strong>Arch</strong><em>DIY minimalism</em><code>rolling</code></span>
+    <span class="snapshot-chip"><strong>Manjaro</strong><em>curated Arch desktop</em><code>gated rolling</code></span>
+    <span class="snapshot-chip"><strong>EndeavourOS</strong><em>near-vanilla Arch</em><code>rolling</code></span>
+    <span class="snapshot-chip"><strong>CachyOS</strong><em>performance-tuned Arch</em><code>rolling</code></span>
+    <span class="snapshot-chip"><strong>Garuda Linux</strong><em>desktop/gaming defaults</em><code>rolling</code></span>
+    <span class="snapshot-chip"><strong>ChimeraOS</strong><em>console-style gaming OS</em><code>immutable image updates</code></span>
+    <span class="snapshot-chip"><strong>SteamOS</strong><em>Steam Deck platform</em><code>immutable image updates</code></span>
+  </div>
+
+  <h3>Independent lines</h3>
+  <div class="snapshot-grid">
+    <span class="snapshot-chip"><strong>Gentoo</strong><em>source-based control</em><code>rolling</code></span>
+    <span class="snapshot-chip"><strong>NixOS</strong><em>declarative reproducibility</em><code>stable + unstable channels</code></span>
+    <span class="snapshot-chip"><strong>Slackware</strong><em>UNIX-like conservatism</em><code>slow fixed releases</code></span>
+    <span class="snapshot-chip"><strong>Alpine</strong><em>small secure base</em><code>stable + edge</code></span>
+    <span class="snapshot-chip"><strong>Void Linux</strong><em>runit/no-systemd</em><code>rolling</code></span>
+    <span class="snapshot-chip"><strong>Solus</strong><em>desktop curation</em><code>curated rolling</code></span>
+  </div>
+
+  <p class="snapshot-footnote">Deprecated branches shown in the tree: <strong>Red Hat Linux</strong>, <strong>Mandrake</strong>, <strong>Mandriva</strong>, and <strong>CentOS Linux</strong>.</p>
+</div>
 
 ---
 

@@ -1,410 +1,318 @@
 ---
-/*
- * AncestryTree.astro — single SVG, top-down branching tree of 27 Linux
- * distributions descending from the 1991 kernel.
- *
- * Layout:
- *   - Y axis is time (linear, 1991 at top → 2024 at bottom, 18 px/year)
- *   - Each distro owns one vertical lane (X), ordered depth-first so siblings
- *     stay adjacent and branch crossings are minimal
- *   - A distro appears as a colored dot at its founding year, with a colored
- *     lifeline continuing down to the present (dashed + capped for distros
- *     that no longer ship, e.g. Red Hat Linux 1994–2003)
- *   - Parent → child forks are drawn as a short horizontal branch at the
- *     child's founding year, linking the parent lane into the child lane
- *   - Names sit in a label band under the chart (rotated 90° so a 42 px
- *     lane can hold any name)
- *
- * Maintenance:
- *   - Adding a distro: push a new entry to NODES with an unused `lane`
- *     index. Keep the list in depth-first order (parents immediately followed
- *     by their descendants) so the generated tree keeps branches tidy.
- *   - If a new brand color isn't yet in the grid on linux-distros.mdx, you
- *     can still set `color` here — the SVG is self-contained.
- */
-
-type Node = {
-  id: string;
-  name: string;
-  year: number;
-  parent: string | null;
-  lane: number;
-  color: string;
-  href?: string | null;
-  until?: number;
-};
-
-const NODES: Node[] = [
-  { id: 'slackware',  name: 'Slackware',     year: 1993, parent: null,      lane: 0,  color: '#2A5EA8', href: 'http://www.slackware.com' },
-  { id: 'debian',     name: 'Debian',        year: 1993, parent: null,      lane: 1,  color: '#A81D33', href: 'https://www.debian.org' },
-  { id: 'ubuntu',     name: 'Ubuntu',        year: 2004, parent: 'debian',  lane: 2,  color: '#E95420', href: 'https://ubuntu.com' },
-  { id: 'mint',       name: 'Linux Mint',    year: 2006, parent: 'ubuntu',  lane: 3,  color: '#87CF3E', href: 'https://linuxmint.com' },
-  { id: 'pop',        name: 'Pop!_OS',       year: 2017, parent: 'ubuntu',  lane: 4,  color: '#48B9C7', href: 'https://pop.system76.com' },
-  { id: 'kodachi',    name: 'Kodachi',       year: 2013, parent: 'ubuntu',  lane: 5,  color: '#B71C1C', href: 'https://www.digi77.com/linux-kodachi/' },
-  { id: 'tails',      name: 'Tails',         year: 2009, parent: 'debian',  lane: 6,  color: '#56347C', href: 'https://tails.net' },
-  { id: 'whonix',     name: 'Whonix',        year: 2012, parent: 'debian',  lane: 7,  color: '#6BA73A', href: 'https://www.whonix.org' },
-  { id: 'kali',       name: 'Kali',          year: 2013, parent: 'debian',  lane: 8,  color: '#557C94', href: 'https://www.kali.org' },
-  { id: 'redhat',     name: 'Red Hat Linux', year: 1994, parent: null,      lane: 9,  color: '#B0B0B0', until: 2003 },
-  { id: 'fedora',     name: 'Fedora',        year: 2003, parent: 'redhat',  lane: 10, color: '#51A2DA', href: 'https://fedoraproject.org' },
-  { id: 'nobara',     name: 'Nobara',        year: 2022, parent: 'fedora',  lane: 11, color: '#EE5396', href: 'https://nobaraproject.org' },
-  { id: 'bazzite',    name: 'Bazzite',       year: 2023, parent: 'fedora',  lane: 12, color: '#EA5B0C', href: 'https://bazzite.gg' },
-  { id: 'qubes',      name: 'Qubes OS',      year: 2010, parent: 'fedora',  lane: 13, color: '#3874D8', href: 'https://www.qubes-os.org' },
-  { id: 'rhel',       name: 'RHEL',          year: 2002, parent: 'redhat',  lane: 14, color: '#EE0000', href: 'https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux' },
-  { id: 'rocky',      name: 'Rocky Linux',   year: 2021, parent: 'rhel',    lane: 15, color: '#10B981', href: 'https://rockylinux.org' },
-  { id: 'alma',       name: 'AlmaLinux',     year: 2021, parent: 'rhel',    lane: 16, color: '#0D597F', href: 'https://almalinux.org' },
-  { id: 'opensuse',   name: 'openSUSE',      year: 2005, parent: null,      lane: 17, color: '#73BA25', href: 'https://www.opensuse.org' },
-  { id: 'gentoo',     name: 'Gentoo',        year: 2002, parent: null,      lane: 18, color: '#54487A', href: 'https://www.gentoo.org' },
-  { id: 'arch',       name: 'Arch',          year: 2002, parent: null,      lane: 19, color: '#1793D1', href: 'https://archlinux.org' },
-  { id: 'manjaro',    name: 'Manjaro',       year: 2011, parent: 'arch',    lane: 20, color: '#35BF5C', href: 'https://manjaro.org' },
-  { id: 'endeavour',  name: 'EndeavourOS',   year: 2019, parent: 'arch',    lane: 21, color: '#7B3F94', href: 'https://endeavouros.com' },
-  { id: 'cachyos',    name: 'CachyOS',       year: 2021, parent: 'arch',    lane: 22, color: '#00C9A7', href: 'https://cachyos.org' },
-  { id: 'garuda',     name: 'Garuda',        year: 2020, parent: 'arch',    lane: 23, color: '#2EB398', href: 'https://garudalinux.org' },
-  { id: 'chimera',    name: 'ChimeraOS',     year: 2019, parent: 'arch',    lane: 24, color: '#FF8800', href: 'https://chimeraos.org' },
-  { id: 'steamos',    name: 'SteamOS',       year: 2022, parent: 'arch',    lane: 25, color: '#66C0F4', href: 'https://store.steampowered.com/steamos/' },
-  { id: 'nixos',      name: 'NixOS',         year: 2003, parent: null,      lane: 26, color: '#5277C3', href: 'https://nixos.org' },
-  { id: 'alpine',     name: 'Alpine',        year: 2005, parent: null,      lane: 27, color: '#0D597F', href: 'https://alpinelinux.org' },
-];
-
-// Layout constants
-const Y0 = 1991;
-const Y_SCALE = 18;
-const TOP_PAD = 30;
-const KERNEL_Y = TOP_PAD;
-const Y0_Y = TOP_PAD + 50;
-const LANE_W = 42;
-const LEFT_PAD = 64;
-const RIGHT_PAD = 36;
-const LABEL_BAND = 140;
-const YEARS_SPAN = 33;
-const LANES = NODES.length;
-const SVG_W = LEFT_PAD + LANES * LANE_W + RIGHT_PAD;
-const BOTTOM_Y = Y0_Y + YEARS_SPAN * Y_SCALE;
-const SVG_H = BOTTOM_Y + LABEL_BAND;
-
-const yToY = (y: number) => Y0_Y + (y - Y0) * Y_SCALE;
-const laneToX = (l: number) => LEFT_PAD + l * LANE_W + LANE_W / 2;
-
-const nodeMap = new Map(NODES.map((n) => [n.id, n]));
-const eventYears = Array.from(new Set(NODES.map((n) => n.year))).sort((a, b) => a - b);
-
-const rootNodes = NODES.filter((n) => n.parent === null);
-const rootLanes = rootNodes.map((n) => n.lane);
-const trunkX1 = laneToX(Math.min(...rootLanes));
-const trunkX2 = laneToX(Math.max(...rootLanes));
-const KERNEL_X = (trunkX1 + trunkX2) / 2;
-
-const staggerMs = (year: number) => (year - Y0) * 35;
+// AncestryTree.astro
+// Generated from generate.py — edit data there, not here.
+// 52-year ancestry diagram from UNIX (1971) through 45 nodes to 2023.
+// Pure inline SVG, zero JS. Themes via CSS variables.
 ---
-
-<figure class="ancestry-figure">
-  <div class="ancestry-scroll" tabindex="0" aria-label="Scroll horizontally to see the full tree">
-    <svg
-      viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-      role="img"
-      aria-label={`Branching ancestry tree of ${NODES.filter((n) => !n.until).length} Linux distributions and their historical ancestor, all descending from the 1991 kernel.`}
-      class="ancestry-svg"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Year gridlines — one faint horizontal line per event year */}
-      {eventYears.map((y) => (
-        <line
-          x1={LEFT_PAD - 14}
-          x2={SVG_W - RIGHT_PAD + 4}
-          y1={yToY(y)}
-          y2={yToY(y)}
-          class="ancestry-gridline"
-        />
-      ))}
-
-      {/* Year axis labels */}
-      {eventYears.map((y) => (
-        <text
-          x={LEFT_PAD - 18}
-          y={yToY(y) + 3.5}
-          text-anchor="end"
-          class="ancestry-year-label"
-        >{y}</text>
-      ))}
-
-      {/* Kernel trunk — horizontal bar spanning the lanes of all root distros */}
-      <line
-        x1={trunkX1}
-        x2={trunkX2}
-        y1={KERNEL_Y + 20}
-        y2={KERNEL_Y + 20}
-        class="ancestry-kernel-trunk"
-      />
-
-      {/* Kernel chip */}
-      <g class="ancestry-kernel" transform={`translate(${KERNEL_X}, ${KERNEL_Y})`}>
-        <rect x={-78} y={-14} width={156} height={30} rx={7} class="ancestry-kernel-rect" />
-        <text x={0} y={6} text-anchor="middle" class="ancestry-kernel-text">Linux kernel · 1991</text>
-      </g>
-
-      {/* Vertical "approach" lines dropping from the trunk to each root distro's founding year */}
-      {rootNodes.map((n) => (
-        <line
-          x1={laneToX(n.lane)}
-          x2={laneToX(n.lane)}
-          y1={KERNEL_Y + 20}
-          y2={yToY(n.year)}
-          class="ancestry-approach"
-          style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year)}ms;`}
-        />
-      ))}
-
-      {/* Horizontal branch connectors for non-root distros — from parent lane to child lane at the child's founding year */}
-      {NODES.filter((n) => n.parent !== null).map((n) => {
-        const p = nodeMap.get(n.parent as string)!;
-        const cx = laneToX(n.lane);
-        const cy = yToY(n.year);
-        const px = laneToX(p.lane);
-        const x1 = Math.min(px, cx);
-        const x2 = Math.max(px, cx);
-        return (
-          <line
-            x1={x1}
-            x2={x2}
-            y1={cy}
-            y2={cy}
-            class="ancestry-branch"
-            style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year)}ms;`}
-          />
-        );
-      })}
-
-      {/* Vertical lifelines — each distro's line from its founding year to present (or its end year) */}
-      {NODES.map((n) => {
-        const cx = laneToX(n.lane);
-        const top = yToY(n.year);
-        const end = n.until ? yToY(n.until) : BOTTOM_Y;
-        return (
-          <line
-            x1={cx}
-            x2={cx}
-            y1={top}
-            y2={end}
-            class={`ancestry-lifeline${n.until ? ' is-discontinued' : ''}`}
-            style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year)}ms;`}
-          />
-        );
-      })}
-
-      {/* Birth dots, end-of-life markers, and rotated name labels */}
-      {NODES.map((n) => {
-        const cx = laneToX(n.lane);
-        const cy = yToY(n.year);
-        const labelAnchorY = (n.until ? yToY(n.until) : BOTTOM_Y) + 10;
-        const labelText = n.until ? `${n.name} · ${n.year}–${n.until}` : `${n.name} · ${n.year}`;
-        const inner = (
-          <g
-            class={`ancestry-node${n.until ? ' is-discontinued' : ''}`}
-            style={`--dist-color: ${n.color}; animation-delay: ${staggerMs(n.year) + 120}ms;`}
-          >
-            <circle cx={cx} cy={cy} r={4.5} class="ancestry-dot" />
-            {n.until && (
-              <circle cx={cx} cy={yToY(n.until)} r={3.5} class="ancestry-dot-end" />
-            )}
-            <text
-              x={cx}
-              y={labelAnchorY}
-              text-anchor="start"
-              class="ancestry-label"
-              transform={`rotate(90 ${cx} ${labelAnchorY})`}
-            >{labelText}</text>
-          </g>
-        );
-        return n.href ? (
-          <a href={n.href} target="_blank" rel="noopener noreferrer" class="ancestry-link">
-            {inner}
-          </a>
-        ) : inner;
-      })}
-    </svg>
-  </div>
-  <figcaption class="ancestry-caption">
-    Trace any lifeline upward — every distro connects back to the 1991 kernel through one to three forks. Solid lines are shipping today; the dashed line is Red&nbsp;Hat Linux, which stopped in 2003 after fathering both Fedora and RHEL.
-  </figcaption>
+<figure class="ancestry-tree">
+<svg viewBox="0 0 1480 2810" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ancestry tree of Linux distributions, from UNIX (1971) to 2023">
+<g class="bands">
+<rect x="70" y="1125" width="80" height="1675" class="band band-slackware" rx="4"/>
+<rect x="160" y="1125" width="350" height="1675" class="band band-debian" rx="4"/>
+<rect x="520" y="1125" width="310" height="1675" class="band band-redhat" rx="4"/>
+<rect x="840" y="1125" width="80" height="1675" class="band band-opensuse" rx="4"/>
+<rect x="930" y="1125" width="110" height="1675" class="band band-independent" rx="4"/>
+<rect x="1050" y="1125" width="230" height="1675" class="band band-arch" rx="4"/>
+<text x="110" y="1113" class="band-label band-label-slackware" text-anchor="middle">SLACKWARE</text>
+<text x="335" y="1113" class="band-label band-label-debian" text-anchor="middle">DEBIAN</text>
+<text x="675" y="1113" class="band-label band-label-redhat" text-anchor="middle">RED HAT</text>
+<text x="880" y="1113" class="band-label band-label-opensuse" text-anchor="middle">OPENSUSE</text>
+<text x="985" y="1113" class="band-label band-label-independent" text-anchor="middle">INDEPENDENT</text>
+<text x="1165" y="1113" class="band-label band-label-arch" text-anchor="middle">ARCH</text>
+</g>
+<line x1="60" x2="1460" y1="1120" y2="1120" class="linux-divider"/>
+<g class="year-axis">
+<line x1="60" x2="1460" y1="300" y2="300" class="year-grid"/>
+<text x="50" y="305" class="year-label" text-anchor="end">1975</text>
+<line x1="60" x2="1460" y1="550" y2="550" class="year-grid"/>
+<text x="50" y="555" class="year-label" text-anchor="end">1980</text>
+<line x1="60" x2="1460" y1="800" y2="800" class="year-grid"/>
+<text x="50" y="805" class="year-label" text-anchor="end">1985</text>
+<line x1="60" x2="1460" y1="1050" y2="1050" class="year-grid"/>
+<text x="50" y="1055" class="year-label" text-anchor="end">1990</text>
+<line x1="60" x2="1460" y1="1300" y2="1300" class="year-grid"/>
+<text x="50" y="1305" class="year-label" text-anchor="end">1995</text>
+<line x1="60" x2="1460" y1="1550" y2="1550" class="year-grid"/>
+<text x="50" y="1555" class="year-label" text-anchor="end">2000</text>
+<line x1="60" x2="1460" y1="1800" y2="1800" class="year-grid"/>
+<text x="50" y="1805" class="year-label" text-anchor="end">2005</text>
+<line x1="60" x2="1460" y1="2050" y2="2050" class="year-grid"/>
+<text x="50" y="2055" class="year-label" text-anchor="end">2010</text>
+<line x1="60" x2="1460" y1="2300" y2="2300" class="year-grid"/>
+<text x="50" y="2305" class="year-label" text-anchor="end">2015</text>
+<line x1="60" x2="1460" y1="2550" y2="2550" class="year-grid"/>
+<text x="50" y="2555" class="year-label" text-anchor="end">2020</text>
+</g>
+<g class="edges">
+<path d="M 660,109 C 660,400 480,400 480,691" class="edge edge-proto"/>
+<path d="M 660,109 C 660,500 660,500 660,891" class="edge edge-proto"/>
+<path d="M 660,909 C 660,1000 660,1000 660,1091" class="edge edge-independent"/>
+<path d="M 660,1109 C 660,1125 80,1125 80,1141" class="edge edge-slackware"/>
+<path d="M 80,1159 C 80,1175 80,1175 80,1191" class="edge edge-slackware"/>
+<path d="M 660,1109 C 660,1150 260,1150 260,1191" class="edge edge-debian"/>
+<path d="M 660,1109 C 660,1175 660,1175 660,1241" class="edge edge-redhat"/>
+<path d="M 660,1259 C 660,1350 580,1350 580,1441" class="edge edge-redhat edge-from-defunct"/>
+<path d="M 660,1109 C 660,1325 950,1325 950,1541" class="edge edge-independent"/>
+<path d="M 660,1109 C 660,1375 1140,1375 1140,1641" class="edge edge-arch"/>
+<path d="M 660,1259 C 660,1450 740,1450 740,1641" class="edge edge-redhat edge-from-defunct"/>
+<path d="M 660,1259 C 660,1475 560,1475 560,1691" class="edge edge-redhat edge-from-defunct"/>
+<path d="M 660,1109 C 660,1400 950,1400 950,1691" class="edge edge-independent"/>
+<path d="M 260,1209 C 260,1450 400,1450 400,1691" class="edge edge-debian"/>
+<path d="M 260,1209 C 260,1475 300,1475 300,1741" class="edge edge-debian"/>
+<path d="M 740,1659 C 740,1700 820,1700 820,1741" class="edge edge-redhat"/>
+<path d="M 580,1459 C 580,1625 580,1625 580,1791" class="edge edge-redhat edge-from-defunct"/>
+<path d="M 660,1109 C 660,1450 880,1450 880,1791" class="edge edge-opensuse"/>
+<path d="M 660,1109 C 660,1450 1010,1450 1010,1791" class="edge edge-independent"/>
+<path d="M 300,1759 C 300,1800 220,1800 220,1841" class="edge edge-debian"/>
+<path d="M 660,1109 C 660,1525 950,1525 950,1941" class="edge edge-independent"/>
+<path d="M 260,1209 C 260,1600 470,1600 470,1991" class="edge edge-debian"/>
+<path d="M 300,1759 C 300,1875 240,1875 240,1991" class="edge edge-debian"/>
+<path d="M 580,1809 C 580,1925 580,1925 580,2041" class="edge edge-redhat edge-from-defunct"/>
+<path d="M 1140,1659 C 1140,1875 1060,1875 1060,2091" class="edge edge-arch"/>
+<path d="M 300,1759 C 300,1925 340,1925 340,2091" class="edge edge-debian"/>
+<path d="M 560,1709 C 560,1925 620,1925 620,2141" class="edge edge-redhat"/>
+<path d="M 260,1209 C 260,1675 470,1675 470,2141" class="edge edge-debian"/>
+<path d="M 660,1109 C 660,1625 1010,1625 1010,2141" class="edge edge-independent"/>
+<path d="M 580,1809 C 580,1975 440,1975 440,2141" class="edge edge-redhat edge-from-defunct"/>
+<path d="M 260,1209 C 260,1700 470,1700 470,2191" class="edge edge-debian"/>
+<path d="M 300,1759 C 300,1975 380,1975 380,2191" class="edge edge-debian"/>
+<path d="M 260,1209 C 260,1725 460,1725 460,2241" class="edge edge-debian"/>
+<path d="M 300,1759 C 300,2075 380,2075 380,2391" class="edge edge-debian"/>
+<path d="M 1140,1659 C 1140,2075 1080,2075 1080,2491" class="edge edge-arch"/>
+<path d="M 1140,1659 C 1140,2075 1230,2075 1230,2491" class="edge edge-arch"/>
+<path d="M 820,1759 C 820,2125 720,2125 720,2491" class="edge edge-redhat edge-from-defunct"/>
+<path d="M 1140,1659 C 1140,2100 1140,2100 1140,2541" class="edge edge-arch"/>
+<path d="M 740,1659 C 740,2125 700,2125 700,2591" class="edge edge-redhat"/>
+<path d="M 740,1659 C 740,2125 800,2125 800,2591" class="edge edge-redhat"/>
+<path d="M 1140,1659 C 1140,2125 1200,2125 1200,2591" class="edge edge-arch"/>
+<path d="M 560,1709 C 560,2175 520,2175 520,2641" class="edge edge-redhat"/>
+<path d="M 1140,1659 C 1140,2150 1230,2150 1230,2641" class="edge edge-arch"/>
+<path d="M 560,1709 C 560,2200 600,2200 600,2691" class="edge edge-redhat"/>
+</g>
+<g class="inspirations">
+<path d="M 80,1209 C 80,1500 880,1500 880,1791" class="edge-inspired"/>
+</g>
+<g class="nodes">
+<g class="node node-proto"><circle cx="660" cy="100" r="9" class="node-circle"/><text x="660" y="79" text-anchor="middle" class="node-name">UNIX<tspan class="node-year"> · 1971</tspan></text></g>
+<g class="node node-proto"><circle cx="480" cy="700" r="9" class="node-circle"/><text x="496" y="705" text-anchor="start" class="node-name">GNU<tspan class="node-year"> · 1983</tspan></text></g>
+<g class="node node-proto"><circle cx="660" cy="900" r="9" class="node-circle"/><text x="676" y="905" text-anchor="start" class="node-name">MINIX<tspan class="node-year"> · 1987</tspan></text></g>
+<g class="node node-independent"><circle cx="660" cy="1100" r="9" class="node-circle"/><text x="660" y="1079" text-anchor="middle" class="node-name">Linux kernel<tspan class="node-year"> · 1991</tspan></text></g>
+<g class="node node-slackware"><circle cx="80" cy="1150" r="9" class="node-circle"/><text x="96" y="1155" text-anchor="start" class="node-name">SLS<tspan class="node-year"> · 1992</tspan><tspan class="node-note"> ³</tspan></text></g>
+<g class="node node-slackware"><circle cx="80" cy="1200" r="9" class="node-circle"/><text x="96" y="1205" text-anchor="start" class="node-name">Slackware<tspan class="node-year"> · 1993</tspan></text></g>
+<g class="node node-debian"><circle cx="260" cy="1200" r="9" class="node-circle"/><text x="276" y="1205" text-anchor="start" class="node-name">Debian<tspan class="node-year"> · 1993</tspan></text></g>
+<g class="node node-redhat node-defunct"><circle cx="660" cy="1250" r="9" class="node-circle"/><text x="676" y="1255" text-anchor="start" class="node-name">Red Hat Linux<tspan class="node-year"> · 1994</tspan></text></g>
+<g class="node node-redhat node-defunct"><circle cx="580" cy="1450" r="9" class="node-circle"/><text x="564" y="1455" text-anchor="end" class="node-name">Mandrake<tspan class="node-year"> · 1998</tspan></text></g>
+<g class="node node-independent"><circle cx="950" cy="1550" r="9" class="node-circle"/><text x="966" y="1555" text-anchor="start" class="node-name">Gentoo<tspan class="node-year"> · 2000</tspan></text></g>
+<g class="node node-arch"><circle cx="1140" cy="1650" r="9" class="node-circle"/><text x="1156" y="1655" text-anchor="start" class="node-name">Arch<tspan class="node-year"> · 2002</tspan></text></g>
+<g class="node node-redhat"><circle cx="740" cy="1650" r="9" class="node-circle"/><text x="756" y="1655" text-anchor="start" class="node-name">RHEL<tspan class="node-year"> · 2002</tspan></text></g>
+<g class="node node-redhat"><circle cx="560" cy="1700" r="9" class="node-circle"/><text x="544" y="1705" text-anchor="end" class="node-name">Fedora<tspan class="node-year"> · 2003</tspan></text></g>
+<g class="node node-independent"><circle cx="950" cy="1700" r="9" class="node-circle"/><text x="966" y="1705" text-anchor="start" class="node-name">NixOS<tspan class="node-year"> · 2003</tspan></text></g>
+<g class="node node-debian"><circle cx="400" cy="1700" r="9" class="node-circle"/><text x="384" y="1705" text-anchor="end" class="node-name">Knoppix<tspan class="node-year"> · 2003</tspan></text></g>
+<g class="node node-debian"><circle cx="300" cy="1750" r="9" class="node-circle"/><text x="316" y="1755" text-anchor="start" class="node-name">Ubuntu<tspan class="node-year"> · 2004</tspan></text></g>
+<g class="node node-redhat node-defunct"><circle cx="820" cy="1750" r="9" class="node-circle"/><text x="836" y="1755" text-anchor="start" class="node-name">CentOS<tspan class="node-year"> · 2004</tspan></text></g>
+<g class="node node-redhat node-defunct"><circle cx="580" cy="1800" r="9" class="node-circle"/><text x="564" y="1805" text-anchor="end" class="node-name">Mandriva<tspan class="node-year"> · 2005</tspan></text></g>
+<g class="node node-opensuse"><circle cx="880" cy="1800" r="9" class="node-circle"/><text x="864" y="1805" text-anchor="end" class="node-name">openSUSE<tspan class="node-year"> · 2005</tspan><tspan class="node-note"> ⁴</tspan></text></g>
+<g class="node node-independent"><circle cx="1010" cy="1800" r="9" class="node-circle"/><text x="1026" y="1805" text-anchor="start" class="node-name">Alpine<tspan class="node-year"> · 2005</tspan></text></g>
+<g class="node node-debian"><circle cx="220" cy="1850" r="9" class="node-circle"/><text x="204" y="1855" text-anchor="end" class="node-name">Linux Mint<tspan class="node-year"> · 2006</tspan></text></g>
+<g class="node node-independent"><circle cx="950" cy="1950" r="9" class="node-circle"/><text x="966" y="1955" text-anchor="start" class="node-name">Void Linux<tspan class="node-year"> · 2008</tspan></text></g>
+<g class="node node-debian"><circle cx="470" cy="2000" r="9" class="node-circle"/><text x="486" y="2005" text-anchor="start" class="node-name">Tails<tspan class="node-year"> · 2009</tspan></text></g>
+<g class="node node-debian"><circle cx="240" cy="2000" r="9" class="node-circle"/><text x="224" y="2005" text-anchor="end" class="node-name">Zorin OS<tspan class="node-year"> · 2009</tspan></text></g>
+<g class="node node-redhat"><circle cx="580" cy="2050" r="9" class="node-circle"/><text x="596" y="2055" text-anchor="start" class="node-name">Mageia<tspan class="node-year"> · 2010</tspan></text></g>
+<g class="node node-arch"><circle cx="1060" cy="2100" r="9" class="node-circle"/><text x="1044" y="2105" text-anchor="end" class="node-name">Manjaro<tspan class="node-year"> · 2011</tspan></text></g>
+<g class="node node-debian"><circle cx="340" cy="2100" r="9" class="node-circle"/><text x="356" y="2105" text-anchor="start" class="node-name">Elementary OS<tspan class="node-year"> · 2011</tspan></text></g>
+<g class="node node-redhat"><circle cx="620" cy="2150" r="9" class="node-circle"/><text x="636" y="2155" text-anchor="start" class="node-name">Qubes OS<tspan class="node-year"> · 2012</tspan><tspan class="node-note"> ¹</tspan></text></g>
+<g class="node node-debian"><circle cx="470" cy="2150" r="9" class="node-circle"/><text x="486" y="2155" text-anchor="start" class="node-name">Whonix<tspan class="node-year"> · 2012</tspan></text></g>
+<g class="node node-independent"><circle cx="1010" cy="2150" r="9" class="node-circle"/><text x="1026" y="2155" text-anchor="start" class="node-name">Solus<tspan class="node-year"> · 2012</tspan></text></g>
+<g class="node node-redhat"><circle cx="440" cy="2150" r="9" class="node-circle"/><text x="424" y="2155" text-anchor="end" class="node-name">OpenMandriva<tspan class="node-year"> · 2012</tspan></text></g>
+<g class="node node-debian"><circle cx="470" cy="2200" r="9" class="node-circle"/><text x="486" y="2205" text-anchor="start" class="node-name">Kali<tspan class="node-year"> · 2013</tspan></text></g>
+<g class="node node-debian"><circle cx="380" cy="2200" r="9" class="node-circle"/><text x="364" y="2205" text-anchor="end" class="node-name">Kodachi<tspan class="node-year"> · 2013</tspan></text></g>
+<g class="node node-debian"><circle cx="460" cy="2250" r="9" class="node-circle"/><text x="476" y="2255" text-anchor="start" class="node-name">MX Linux<tspan class="node-year"> · 2014</tspan></text></g>
+<g class="node node-debian"><circle cx="380" cy="2400" r="9" class="node-circle"/><text x="396" y="2405" text-anchor="start" class="node-name">Pop!_OS<tspan class="node-year"> · 2017</tspan></text></g>
+<g class="node node-arch"><circle cx="1080" cy="2500" r="9" class="node-circle"/><text x="1064" y="2505" text-anchor="end" class="node-name">EndeavourOS<tspan class="node-year"> · 2019</tspan></text></g>
+<g class="node node-arch"><circle cx="1230" cy="2500" r="9" class="node-circle"/><text x="1246" y="2505" text-anchor="start" class="node-name">ChimeraOS<tspan class="node-year"> · 2019</tspan></text></g>
+<g class="node node-redhat"><circle cx="720" cy="2500" r="9" class="node-circle"/><text x="704" y="2505" text-anchor="end" class="node-name">CentOS Stream<tspan class="node-year"> · 2019</tspan></text></g>
+<g class="node node-arch"><circle cx="1140" cy="2550" r="9" class="node-circle"/><text x="1156" y="2555" text-anchor="start" class="node-name">Garuda<tspan class="node-year"> · 2020</tspan></text></g>
+<g class="node node-redhat"><circle cx="700" cy="2600" r="9" class="node-circle"/><text x="684" y="2605" text-anchor="end" class="node-name">Rocky Linux<tspan class="node-year"> · 2021</tspan></text></g>
+<g class="node node-redhat"><circle cx="800" cy="2600" r="9" class="node-circle"/><text x="816" y="2605" text-anchor="start" class="node-name">AlmaLinux<tspan class="node-year"> · 2021</tspan></text></g>
+<g class="node node-arch"><circle cx="1200" cy="2600" r="9" class="node-circle"/><text x="1216" y="2605" text-anchor="start" class="node-name">CachyOS<tspan class="node-year"> · 2021</tspan></text></g>
+<g class="node node-redhat"><circle cx="520" cy="2650" r="9" class="node-circle"/><text x="504" y="2655" text-anchor="end" class="node-name">Nobara<tspan class="node-year"> · 2022</tspan></text></g>
+<g class="node node-arch"><circle cx="1230" cy="2650" r="9" class="node-circle"/><text x="1246" y="2655" text-anchor="start" class="node-name">SteamOS<tspan class="node-year"> · 2022</tspan><tspan class="node-note"> ²</tspan></text></g>
+<g class="node node-redhat"><circle cx="600" cy="2700" r="9" class="node-circle"/><text x="616" y="2705" text-anchor="start" class="node-name">Bazzite<tspan class="node-year"> · 2023</tspan></text></g>
+</g>
+</svg>
+<figcaption class="ancestry-footnotes">
+  <p><span class="fn-marker">¹</span>Qubes&nbsp;OS uses Fedora as <em>dom0</em>, but the real engine is the Xen hypervisor — every "qube" is a separate VM.</p>
+  <p><span class="fn-marker">²</span>SteamOS&nbsp;1–2 (2013) was Debian-based; the Steam Deck reboot in 2022 moved it to Arch. Shown at current ancestry.</p>
+  <p><span class="fn-marker">³</span>SLS (Softlanding Linux System, 1992) was the first complete Linux distribution — kernel + GNU userland in one package. Slackware forked from it the following year.</p>
+  <p><span class="fn-marker">⁴</span>The dotted line shows that early SUSE Linux (1994) was a German repackaging of Slackware before evolving into its own RPM-based distribution. openSUSE is the community edition since 2005.</p>
+</figcaption>
 </figure>
 
 <style>
-  .ancestry-figure {
-    margin: 1.5rem 0 0.5rem;
-    padding: 0;
-  }
-  .ancestry-scroll {
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0.25rem 0 0.75rem;
-    scrollbar-width: thin;
-    border-radius: 0.5rem;
-  }
-  .ancestry-scroll:focus-visible {
-    outline: 2px solid var(--sl-color-accent, #58a6ff);
-    outline-offset: 3px;
-  }
-  .ancestry-svg {
-    display: block;
-    min-width: 1276px;
-    width: 100%;
-    height: auto;
-    font-family: var(--__sl-font, ui-sans-serif, system-ui, sans-serif);
-  }
-  .ancestry-caption {
-    margin: 0.6rem auto 0;
-    max-width: 62ch;
-    font-size: 0.85rem;
-    color: var(--sl-color-gray-3);
-    text-align: center;
-    font-style: italic;
-    line-height: 1.5;
-  }
+.ancestry-tree {
+  margin: 2rem 0;
+  /* Family colors. Debian shifted to raspberry pink (was carmine #b13354)
+     so it stops getting confused with Red Hat's red. */
+  --at-proto:       #876342;
+  --at-slackware:   #4d6da3;
+  --at-debian:      #c93b7e;
+  --at-redhat:      #c9352b;
+  --at-opensuse:    #6cab43;
+  --at-arch:        #1c8bc4;
+  --at-independent: #6b7280;
+  --at-grid:        var(--sl-color-gray-5, #d4d4d8);
+  --at-text:        var(--sl-color-text, #18181b);
+  --at-text-muted:  var(--sl-color-gray-3, #71717a);
+  --at-bg:          var(--sl-color-bg, #fff);
+}
 
-  /* Axis */
-  .ancestry-gridline {
-    stroke: var(--sl-color-gray-5);
-    stroke-width: 1;
-    stroke-dasharray: 2 4;
-    opacity: 0.3;
-  }
-  .ancestry-year-label {
-    font-family: var(--__sl-font-mono, ui-monospace, SFMono-Regular, monospace);
-    font-size: 10.5px;
-    font-weight: 600;
-    fill: var(--sl-color-gray-3);
-    letter-spacing: 0.01em;
-  }
+.ancestry-tree svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: inherit;
+}
 
-  /* Kernel */
-  .ancestry-kernel-trunk {
-    stroke: #FCC624;
-    stroke-width: 2.25;
-    stroke-linecap: round;
-    opacity: 0.9;
-    filter: drop-shadow(0 0 3px rgba(252, 198, 36, 0.5));
-    --end-opacity: 0.9;
-    animation: ancestry-fade 0.6s ease-out backwards;
-  }
-  .ancestry-kernel {
-    --end-opacity: 1;
-    animation: ancestry-fade 0.5s ease-out backwards;
-  }
-  .ancestry-kernel-rect {
-    fill: color-mix(in srgb, #FCC624 16%, transparent);
-    stroke: #FCC624;
-    stroke-width: 1.5;
-  }
-  .ancestry-kernel-text {
-    fill: #FCC624;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-  }
-  :global(:root[data-theme='light']) .ancestry-kernel-text { fill: #7a5800; }
-  :global(:root[data-theme='light']) .ancestry-kernel-rect { fill: color-mix(in srgb, #FCC624 25%, #fff); }
+/* Family bands */
+.band { opacity: 0.05; }
+.band-slackware   { fill: var(--at-slackware); }
+.band-debian      { fill: var(--at-debian); }
+.band-redhat      { fill: var(--at-redhat); }
+.band-opensuse    { fill: var(--at-opensuse); }
+.band-independent { fill: var(--at-independent); }
+.band-arch        { fill: var(--at-arch); }
 
-  /* Lines share --dist-color from inline style */
-  .ancestry-approach,
-  .ancestry-branch,
-  .ancestry-lifeline {
-    stroke: var(--dist-color);
-    fill: none;
-    stroke-linecap: round;
-  }
-  .ancestry-approach {
-    stroke-width: 1.75;
-    --end-opacity: 0.6;
-    opacity: var(--end-opacity);
-    animation: ancestry-fade 0.6s ease-out backwards;
-  }
-  .ancestry-branch {
-    stroke-width: 2.25;
-    --end-opacity: 0.9;
-    opacity: var(--end-opacity);
-    filter: drop-shadow(0 0 2px color-mix(in srgb, var(--dist-color) 40%, transparent));
-    animation: ancestry-fade 0.55s ease-out backwards;
-  }
-  .ancestry-lifeline {
-    stroke-width: 2;
-    --end-opacity: 0.55;
-    opacity: var(--end-opacity);
-    animation: ancestry-fade 0.7s ease-out backwards;
-  }
-  .ancestry-lifeline.is-discontinued {
-    stroke-dasharray: 4 4;
-    --end-opacity: 0.45;
-  }
+.band-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  opacity: 0.85;
+}
+.band-label-slackware   { fill: var(--at-slackware); }
+.band-label-debian      { fill: var(--at-debian); }
+.band-label-redhat      { fill: var(--at-redhat); }
+.band-label-opensuse    { fill: var(--at-opensuse); }
+.band-label-independent { fill: var(--at-independent); }
+.band-label-arch        { fill: var(--at-arch); }
 
-  /* Dots */
-  .ancestry-node {
-    --end-opacity: 1;
-    animation: ancestry-fade 0.4s ease-out backwards;
-  }
-  .ancestry-dot {
-    fill: var(--dist-color);
-    stroke: var(--sl-color-bg, #17181c);
-    stroke-width: 1.5;
-    transition: r 200ms ease, filter 200ms ease;
-  }
-  .ancestry-dot-end {
-    fill: var(--sl-color-bg, #17181c);
-    stroke: var(--dist-color);
-    stroke-width: 1.5;
-    stroke-dasharray: 1.5 1.5;
-    opacity: 0.7;
-  }
-  :global(:root[data-theme='light']) .ancestry-dot { stroke: #fff; }
-  :global(:root[data-theme='light']) .ancestry-dot-end { fill: #fff; }
+/* Linux divider */
+.linux-divider {
+  stroke: var(--at-grid);
+  stroke-width: 2;
+  opacity: 0.7;
+}
 
-  /* Labels */
-  .ancestry-label {
-    fill: var(--dist-color);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.005em;
-    transition: font-weight 180ms ease, filter 180ms ease;
-  }
-  .ancestry-node.is-discontinued .ancestry-label {
-    font-style: italic;
-    opacity: 0.8;
-  }
+/* Year axis */
+.year-grid {
+  stroke: var(--at-grid);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+  opacity: 0.5;
+}
+.year-label {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  fill: var(--at-text-muted);
+  font-weight: 500;
+}
 
-  /* Hover / focus: highlight the hovered distro */
-  .ancestry-link {
-    outline: none;
-    cursor: pointer;
-  }
-  .ancestry-link:focus-visible .ancestry-dot,
-  .ancestry-link:hover .ancestry-dot {
-    r: 6.5;
-    filter: drop-shadow(0 0 6px var(--dist-color));
-  }
-  .ancestry-link:focus-visible .ancestry-label,
-  .ancestry-link:hover .ancestry-label {
-    font-weight: 800;
-    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--dist-color) 70%, transparent));
-  }
+/* Direct lineage edges — chunkier strokes for v3 */
+.edge {
+  fill: none;
+  stroke-width: 3.5;
+  opacity: 0.55;
+  stroke-linecap: round;
+}
+.edge-proto       { stroke: var(--at-proto); }
+.edge-slackware   { stroke: var(--at-slackware); }
+.edge-debian      { stroke: var(--at-debian); }
+.edge-redhat      { stroke: var(--at-redhat); }
+.edge-opensuse    { stroke: var(--at-opensuse); }
+.edge-arch        { stroke: var(--at-arch); }
+.edge-independent { stroke: var(--at-independent); }
 
-  /* Light-mode axis tuning */
-  :global(:root[data-theme='light']) .ancestry-gridline {
-    stroke: var(--sl-color-gray-4);
-    opacity: 0.45;
-  }
+.edge-from-defunct {
+  stroke-dasharray: 7 6;
+  opacity: 0.5;
+}
 
-  /* Animations */
-  @keyframes ancestry-fade {
-    from { opacity: 0; }
-    to   { opacity: var(--end-opacity, 1); }
-  }
+/* Inspiration edges */
+.edge-inspired {
+  fill: none;
+  stroke: var(--at-opensuse);
+  stroke-width: 2.5;
+  stroke-dasharray: 1 7;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    .ancestry-kernel,
-    .ancestry-kernel-trunk,
-    .ancestry-approach,
-    .ancestry-branch,
-    .ancestry-lifeline,
-    .ancestry-node {
-      animation: none !important;
-    }
-  }
+/* Nodes */
+.node-circle {
+  stroke-width: 4;
+  fill: var(--at-bg);
+  transition: r 0.15s ease, stroke-width 0.15s ease;
+}
+.node-proto       .node-circle { stroke: var(--at-proto); }
+.node-slackware   .node-circle { stroke: var(--at-slackware); }
+.node-debian      .node-circle { stroke: var(--at-debian); }
+.node-redhat      .node-circle { stroke: var(--at-redhat); }
+.node-opensuse    .node-circle { stroke: var(--at-opensuse); }
+.node-arch        .node-circle { stroke: var(--at-arch); }
+.node-independent .node-circle { stroke: var(--at-independent); }
+
+.node-defunct .node-circle {
+  stroke-dasharray: 3 3;
+  opacity: 0.65;
+}
+
+.node-name {
+  font-size: 16px;
+  font-weight: 600;
+  fill: var(--at-text);
+}
+.node-year {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  fill: var(--at-text-muted);
+}
+.node-note {
+  font-weight: 400;
+  font-size: 12px;
+  fill: var(--at-text-muted);
+}
+
+.node:hover .node-circle {
+  r: 11;
+  stroke-width: 4.5;
+}
+
+/* Footnotes */
+.ancestry-footnotes {
+  margin: 1rem 0 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--sl-color-gray-5, #e4e4e7);
+  font-size: 0.95rem;
+  color: var(--sl-color-gray-3, #71717a);
+  line-height: 1.6;
+}
+.ancestry-footnotes p { margin: 0.35rem 0; }
+.fn-marker {
+  font-weight: 700;
+  margin-right: 0.45em;
+  color: var(--at-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dark mode */
+[data-theme="dark"] .ancestry-tree {
+  --at-grid:       var(--sl-color-gray-4, #52525b);
+  --at-text-muted: var(--sl-color-gray-2, #a1a1aa);
+  --at-proto:      #b08962;
+  --at-debian:     #e0588f;  /* brighter pink in dark mode for clarity */
+}
+[data-theme="dark"] .band              { opacity: 0.10; }
+[data-theme="dark"] .band-label        { opacity: 0.9;  }
+[data-theme="dark"] .edge              { opacity: 0.7;  }
+[data-theme="dark"] .edge-from-defunct { opacity: 0.75; }
+[data-theme="dark"] .edge-inspired     { opacity: 0.75; }
 </style>

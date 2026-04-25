@@ -238,7 +238,7 @@
 
 /* ===========================================================
    Visual guide: "Linux distros at a glance"
-   Lives at /visuals/linux-distros/. Pure CSS — staggered
+   Lives at /linux/linux-distros/. Pure CSS — staggered
    fade-in on load, hover lift, brand-colored glow.
    =========================================================== */
 
@@ -312,6 +312,45 @@
 
 .distro-card:hover .distro-icon {
   transform: scale(1.12) rotate(-4deg);
+}
+
+/* Real logo assets (PNG/SVG) used by a few distros. */
+.distro-card .distro-icon-image {
+  object-fit: contain;
+}
+
+/* Improve visibility for logos that are hard to read at icon size. */
+.distro-card.i-kodachi .distro-icon-image {
+  width: 2.55rem;
+  flex-basis: 2.55rem;
+  height: 2.55rem;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  border-radius: 999px;
+}
+
+/* Whonix standard logo icon (key/tophat), no artificial chip. */
+.distro-card.i-whonix .distro-icon-image {
+  width: 2.45rem;
+  flex-basis: 2.45rem;
+  height: 2.45rem;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Mageia: show the cauldron mark (left side of official logo). */
+.distro-card.i-mageia .distro-icon-image {
+  width: 2.35rem;
+  flex-basis: 2.35rem;
+  height: 2.35rem;
+  object-fit: cover;
+  object-position: left center;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
 }
 
 .distro-meta {
@@ -396,7 +435,7 @@
 
 /* Per-distro brand color. Drives the icon, the hover border, the
    focus ring, and the corner glow. Matches the .i-<slug> on each
-   <a class="distro-card …"> in src/content/docs/visuals/linux-distros.mdx
+   <a class="distro-card …"> in src/content/docs/linux/linux-distros.mdx
    — keep that list and this list in sync. */
 .distro-card.i-debian      { --distro-color: #A81D33; }
 .distro-card.i-ubuntu      { --distro-color: #E95420; }
@@ -429,4 +468,118 @@
 .distro-card.i-tails       { --distro-color: #56347C; }
 .distro-card.i-whonix      { --distro-color: #66BB44; }
 .distro-card.i-kodachi     { --distro-color: #B71C1C; }
+.distro-card.i-zorin        { --distro-color: #0FA5E9; }
+.distro-card.i-elementary  { --distro-color: #3689E6; }
+/* MX logo is black-on-white; mid-gray reads on light and dark shells. */
+.distro-card.i-mxlinux     { --distro-color: #6B6B6B; }
+.distro-card.i-centos      { --distro-color: #932279; }
+.distro-card.i-centosstream { --distro-color: #EE0000; }
+.distro-card.i-mandriva     { --distro-color: #E20030; }
+.distro-card.i-mageia       { --distro-color: #262260; }
+.distro-card.i-openmandriva { --distro-color: #1FBF85; }
+.distro-card.i-voidlinux    { --distro-color: #478061; }
+.distro-card.i-solus        { --distro-color: #5294E2; }
+
+/* ===========================================================
+   Linux distros: post-tree snapshot graphic
+   Philosophy + update channel chips, including deprecated lines.
+   =========================================================== */
+.snapshot-intro {
+  margin: 0.65rem 0 1rem;
+  color: var(--sl-color-gray-2);
+}
+
+.snapshot-graphic {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 12px;
+  padding: 0.9rem;
+  background: linear-gradient(180deg, var(--sl-color-gray-6), color-mix(in srgb, var(--sl-color-gray-6) 70%, transparent));
+}
+
+.snapshot-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  font-size: 0.78rem;
+  color: var(--sl-color-gray-2);
+  margin-bottom: 0.65rem;
+}
+
+.snapshot-dot {
+  display: inline-block;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 999px;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+.snapshot-dot.active { background: #3fb950; }
+.snapshot-dot.deprecated { background: #f85149; }
+
+.snapshot-graphic h3 {
+  margin: 0.8rem 0 0.5rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+  gap: 0.5rem;
+}
+
+.snapshot-chip {
+  display: grid;
+  gap: 0.2rem;
+  border: 1px solid color-mix(in srgb, var(--sl-color-gray-4) 75%, transparent);
+  background: color-mix(in srgb, var(--sl-color-gray-6) 84%, transparent);
+  border-radius: 10px;
+  padding: 0.48rem 0.56rem;
+  line-height: 1.25;
+}
+
+.snapshot-chip strong {
+  font-size: 0.82rem;
+  color: var(--sl-color-white);
+  font-weight: 650;
+}
+
+.snapshot-chip em {
+  font-size: 0.72rem;
+  color: var(--sl-color-gray-2);
+  font-style: normal;
+}
+
+.snapshot-chip code {
+  font-size: 0.68rem;
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 999px;
+  padding: 0.08rem 0.45rem;
+  width: max-content;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.snapshot-chip.is-deprecated {
+  border-color: color-mix(in srgb, #f85149 55%, var(--sl-color-gray-4));
+  background: color-mix(in srgb, #f85149 14%, var(--sl-color-gray-6));
+}
+
+.snapshot-chip.is-deprecated strong::after {
+  content: ' deprecated';
+  margin-left: 0.35rem;
+  font-size: 0.64rem;
+  color: #ff8a80;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.snapshot-footnote {
+  margin: 0.75rem 0 0;
+  font-size: 0.76rem;
+  color: var(--sl-color-gray-2);
+}
 
