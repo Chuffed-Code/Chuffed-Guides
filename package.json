@@ -11,7 +11,12 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.38.4",
+    "@iconify-json/cib": "^1.2.3",
+    "@iconify-json/logos": "^1.2.11",
+    "@iconify-json/lucide": "^1.2.103",
+    "@iconify-json/simple-icons": "^1.2.79",
     "astro": "^6.0.1",
+    "astro-icon": "^1.1.5",
     "sharp": "^0.34.2"
   }
 }

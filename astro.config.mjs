@@ -1,12 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import icon from 'astro-icon';
 
 export default defineConfig({
   site: 'https://chuffed-code.github.io',
   base: '/Chuffed-Guides',
   trailingSlash: 'always',
   integrations: [
+    icon(),
     starlight({
       title: 'Chuffed-Guides',                                            
       description: 'Useful guides built with AI.',
@@ -33,6 +35,11 @@ export default defineConfig({
           label: 'Linux',
           collapsed: false,
           autogenerate: { directory: 'linux' },
+        },
+        {
+          label: 'Visuals',
+          collapsed: false,
+          autogenerate: { directory: 'visuals' },
         },
       ],
     }),

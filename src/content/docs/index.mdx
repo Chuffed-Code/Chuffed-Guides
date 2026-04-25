@@ -1,0 +1,185 @@
+---
+title: Chuffed-Guides
+description: Guides, written down so I don't have to remember.
+template: splash
+hero:
+  tagline: Guides, written down so I don't have to remember.
+  actions:
+    - text: Browse guides
+      link: '#guides'
+      icon: right-arrow
+      variant: primary
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+import { Icon } from 'astro-icon/components';
+
+## My stack
+
+The tools I actually use, day to day. Click a card to open the tool's website. Cards with a <span class="tool-guide-pill-inline">guide</span> tag have a write-up on this site — click that tag instead.
+
+### Privacy
+
+<ul class="tool-stack">
+  <li class="tool">
+    <a class="tool-link" href="https://proton.me" target="_blank" rel="noopener" aria-label="Proton Mail website"></a>
+    <Icon name="simple-icons:protonmail" class="tool-icon i-protonmail" />
+    <div class="tool-content">
+      <span class="tool-name">Proton Mail</span>
+      <span class="tool-desc">Email vault. The one inbox nobody else knows.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://simplelogin.io" target="_blank" rel="noopener" aria-label="SimpleLogin website"></a>
+    <Icon name="simple-icons:simplelogin" class="tool-icon i-simplelogin" />
+    <div class="tool-content">
+      <span class="tool-name">SimpleLogin</span>
+      <span class="tool-desc">Per-service aliases, so no two services see the same address.</span>
+    </div>
+    <a class="tool-guide-pill" href="./privacy/identity/email-and-aliases/">guide</a>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://bitwarden.com" target="_blank" rel="noopener" aria-label="Bitwarden website"></a>
+    <Icon name="simple-icons:bitwarden" class="tool-icon i-bitwarden" />
+    <div class="tool-content">
+      <span class="tool-name">Bitwarden</span>
+      <span class="tool-desc">Passwords, in a self-hostable vault.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://librewolf.net" target="_blank" rel="noopener" aria-label="LibreWolf website"></a>
+    <Icon name="simple-icons:librewolf" class="tool-icon i-librewolf" />
+    <div class="tool-content">
+      <span class="tool-name">LibreWolf</span>
+      <span class="tool-desc">Primary browser. Hardened Firefox, no telemetry.</span>
+    </div>
+    <a class="tool-guide-pill" href="./privacy/browsers/librewolf-hardening/">guide</a>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://brave.com" target="_blank" rel="noopener" aria-label="Brave website"></a>
+    <Icon name="simple-icons:brave" class="tool-icon i-brave" />
+    <div class="tool-content">
+      <span class="tool-name">Brave</span>
+      <span class="tool-desc">Compatibility fallback for sites that break under hardened Firefox.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://mullvad.net/en/browser" target="_blank" rel="noopener" aria-label="Mullvad Browser website"></a>
+    <Icon name="simple-icons:mullvad" class="tool-icon i-mullvad" />
+    <div class="tool-content">
+      <span class="tool-name">Mullvad Browser</span>
+      <span class="tool-desc">Research browser. Nothing ties to my main profile.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://americasmailbox.com/" target="_blank" rel="noopener" aria-label="Americas Mailbox website"></a>
+    <img src={`${import.meta.env.BASE_URL}icons/americas-mailbox.png`} alt="" class="tool-icon i-americas-mailbox" />
+    <div class="tool-content">
+      <span class="tool-name">Americas Mailbox</span>
+      <span class="tool-desc">PMB ghost address. Physical-mail redirect, so no home address sits on file anywhere.</span>
+    </div>
+    <a class="tool-guide-pill" href="./privacy/identity/pmb-ghost-address/">guide</a>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://optery.com" target="_blank" rel="noopener" aria-label="Optery website"></a>
+    <Icon name="optery" class="tool-icon i-optery" />
+    <div class="tool-content">
+      <span class="tool-name">Optery</span>
+      <span class="tool-desc">Data-broker scrubbing, on autopilot.</span>
+    </div>
+    <a class="tool-guide-pill" href="./privacy/data-brokers/optery-removal/">guide</a>
+  </li>
+</ul>
+
+### OS
+
+<ul class="tool-stack">
+  <li class="tool">
+    <a class="tool-link" href="https://www.apple.com/macos/" target="_blank" rel="noopener" aria-label="macOS website"></a>
+    <Icon name="simple-icons:apple" class="tool-icon i-apple" />
+    <div class="tool-content">
+      <span class="tool-name">macOS</span>
+      <span class="tool-desc">Daily driver. Sorry.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://archlinux.org" target="_blank" rel="noopener" aria-label="Arch Linux website"></a>
+    <Icon name="simple-icons:archlinux" class="tool-icon i-archlinux" />
+    <div class="tool-content">
+      <span class="tool-name">Arch</span>
+      <span class="tool-desc">The PC I'm building. Picked it because I like to tinker.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://kde.org/plasma-desktop/" target="_blank" rel="noopener" aria-label="KDE Plasma website"></a>
+    <Icon name="simple-icons:kdeplasma" class="tool-icon i-kdeplasma" />
+    <div class="tool-content">
+      <span class="tool-name">KDE Plasma</span>
+      <span class="tool-desc">Currently running. Picked it because it's the easy starting point.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://hypr.land" target="_blank" rel="noopener" aria-label="Hyprland website"></a>
+    <Icon name="simple-icons:hyprland" class="tool-icon i-hyprland" />
+    <div class="tool-content">
+      <span class="tool-name">Hyprland</span>
+      <span class="tool-desc">Transitioning here because I love to tinker. Tiled, keyboard-driven, Wayland.</span>
+    </div>
+    <a class="tool-guide-pill" href="./linux/desktop-environments/kde-plasma-vs-hyprland/">guide</a>
+  </li>
+</ul>
+
+Terminal and shell still TBD.
+
+### Everything else
+
+<ul class="tool-stack">
+  <li class="tool">
+    <a class="tool-link" href="https://obsidian.md" target="_blank" rel="noopener" aria-label="Obsidian website"></a>
+    <Icon name="simple-icons:obsidian" class="tool-icon i-obsidian" />
+    <div class="tool-content">
+      <span class="tool-name">Obsidian</span>
+      <span class="tool-desc">Notes, local vault.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://signal.org" target="_blank" rel="noopener" aria-label="Signal website"></a>
+    <Icon name="simple-icons:signal" class="tool-icon i-signal" />
+    <div class="tool-content">
+      <span class="tool-name">Signal</span>
+      <span class="tool-desc">Messaging.</span>
+    </div>
+  </li>
+  <li class="tool">
+    <a class="tool-link" href="https://qobuz.com" target="_blank" rel="noopener" aria-label="Qobuz website"></a>
+    <Icon name="qobuz" class="tool-icon i-qobuz" />
+    <div class="tool-content">
+      <span class="tool-name">Qobuz</span>
+      <span class="tool-desc">Music.</span>
+    </div>
+  </li>
+</ul>
+
+Editor still TBD — I'm vibe-coding this site while I work out which IDE fits me best.
+
+## Visual guides
+
+Concepts that land better as a picture than as prose. Future entries here will be standalone interactive pieces — Python-generated diagrams, live HTML demos — each one a single idea you can open, poke at, and close.
+
+*Nothing here yet. First one coming soon.*
+
+## Guides
+
+Long-form walkthroughs, grouped by topic. More are added as I write them.
+
+<LinkCard
+  title="Privacy"
+  description="Ghost addresses, email aliases, broker removal, browser hardening, and the rest of the kit."
+  href="./privacy/"
+/>
+
+<LinkCard
+  title="Linux"
+  description="Desktop environments, fundamentals, and notes from running Linux as a daily driver."
+  href="./linux/"
+/>

@@ -1,0 +1,228 @@
+/* ===========================================================
+   Splash hero: tighter, more horizontal
+   =========================================================== */
+
+.hero {
+  padding-block: 1.25rem 0.75rem;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.hero .tagline {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  margin-block-start: 0.4rem;
+}
+
+.hero .actions {
+  margin-block-start: 0.85rem;
+}
+
+.hero + .sl-markdown-content > h2:first-child,
+.sl-markdown-content > h2:first-of-type {
+  margin-block-start: 1rem;
+}
+
+/* ===========================================================
+   Subtle "guide ↗" hint (still used in inline prose if needed)
+   =========================================================== */
+
+.guide-link {
+  font-size: 0.7em;
+  font-weight: 400;
+  margin-left: 0.25em;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.guide-link a {
+  color: var(--sl-color-gray-3);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--sl-color-gray-4);
+}
+
+.guide-link a:hover {
+  color: var(--sl-color-text-accent);
+  border-bottom-color: var(--sl-color-text-accent);
+}
+
+.inline-icon {
+  display: inline-block;
+  vertical-align: -0.1em;
+  width: 0.95em;
+  height: 0.95em;
+  color: var(--sl-color-gray-3);
+}
+
+/* ===========================================================
+   "My stack": clickable tool cards with brand-colored icons
+   =========================================================== */
+
+.tool-stack {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 1.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.5rem;
+}
+
+.tool-stack .tool {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  background: var(--sl-color-gray-6);
+  border: 1px solid var(--sl-color-gray-5);
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.tool-stack .tool:hover {
+  background: var(--sl-color-gray-5);
+  border-color: var(--sl-color-gray-4);
+}
+
+.tool-stack .tool-link {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.tool-stack .tool-link:focus-visible {
+  outline: 2px solid var(--sl-color-text-accent);
+  outline-offset: 2px;
+}
+
+.tool-stack .tool-icon {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: 0 0 1.6rem;
+}
+
+.tool-stack .tool-content {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.tool-stack .tool-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--sl-color-white);
+  line-height: 1.2;
+}
+
+.tool-stack .tool-desc {
+  font-size: 0.82rem;
+  color: var(--sl-color-gray-2);
+  line-height: 1.35;
+}
+
+/* "guide" pill: tells the visitor a card has an on-site write-up.
+   Acts as the link to the guide; clicks here don't bubble to the
+   card's overlay link, so the card itself can keep going to the
+   tool's website. */
+.tool-stack .tool-guide-pill {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.tool-stack a.tool-guide-pill:hover {
+  background: var(--sl-color-accent);
+  color: var(--sl-color-white);
+}
+
+/* Variant for tools where the on-site guide IS the destination
+   (no separate company website to send to). The card's overlay
+   link already goes to the guide; the pill is just a visual flag. */
+.tool-stack .tool-guide-pill--only {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Inline pill used in body copy ("...with a `guide` tag..."). */
+.tool-guide-pill-inline {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-text-accent);
+  vertical-align: 0.05em;
+}
+
+/* Wordmark icons (Qobuz, Optery, Americas Mailbox) need a wider
+   slot than the square brand marks. */
+.tool-stack .i-qobuz,
+.tool-stack .i-optery,
+.tool-stack .i-americas-mailbox {
+  height: auto;
+}
+
+.tool-stack .i-qobuz {
+  width: 4rem;
+  flex-basis: 4rem;
+  color: #0070EF;
+}
+
+.tool-stack .i-optery {
+  width: 4.5rem;
+  flex-basis: 4.5rem;
+  color: #4D81F1;
+}
+
+/* Americas Mailbox is a PNG with a black wordmark on transparent
+   background — sit it on a small white chip so it stays readable
+   in dark mode. */
+.tool-stack .i-americas-mailbox {
+  width: 4.5rem;
+  flex-basis: 4.5rem;
+  background: #fff;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+/* Brand-color overrides per icon. astro-icon renders inline SVGs
+   that respect `color` (currentColor) for monochrome marks. */
+.i-protonmail { color: #6D4AFF; }
+.i-simplelogin { color: #EE4F2A; }
+.i-bitwarden { color: #175DDC; }
+.i-librewolf { color: #00ACFF; }
+.i-brave { color: #FB542B; }
+.i-mullvad { color: #FFD524; }
+.i-apple { color: var(--sl-color-white); }
+.i-archlinux { color: #1793D1; }
+.i-kdeplasma { color: #1D99F3; }
+.i-hyprland { color: #00B4D9; }
+.i-obsidian { color: #7C3AED; }
+.i-signal { color: #3A76F0; }
