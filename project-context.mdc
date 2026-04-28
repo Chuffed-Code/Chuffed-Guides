@@ -1,0 +1,182 @@
+---
+description: Always-applied project context for Chuffed-Guides
+alwaysApply: true
+---
+
+# Chuffed-Guides project context
+
+This is a static documentation site built with Astro + Starlight, deployed to GitHub Pages. License: CC0 1.0 (public domain).
+
+## Stack
+
+- Astro (latest) with `@astrojs/starlight`
+- TypeScript (strict)
+- Deploy: GitHub Actions → GitHub Pages
+- Site URL: https://chuffed-code.github.io/Chuffed-Guides/
+
+## Critical config values (do not change without reason)
+
+In `astro.config.mjs`:
+- `site: 'https://chuffed-code.github.io'`
+- `base: '/Chuffed-Guides'`
+- `lastUpdated: true` (requires `fetch-depth: 0` in CI)
+- `customCss: ['./src/styles/custom.css']`
+
+## File structure rules
+
+- Content lives in `src/content/docs/`
+- Top-level folders are TOPICS only: `privacy/`, `linux/`, `sketches/`
+- Format is NEVER a topic. A visual about Linux distros lives in `linux/`, not `visuals/`
+- Subcategories within topics use lowercase folder names: `identity/`, `network/`, `fundamentals/`, `desktop-environments/`, etc.
+- One special case: `privacy/legal/arbitration-opt-outs/` is the only two-level nesting
+
+## Frontmatter convention (every guide must follow)
+
+```yaml
+---
+title: "Title in Title Case"
+description: "One-line description for metadata and search."
+topic: privacy            # privacy | linux | sketches
+category: identity        # matches subfolder name, lowercase
+tags: [tag1, tag2]        # lowercase, hyphenated, optional
+lastUpdated: YYYY-MM-DD
+sidebar:
+  order: 30               # gaps of 10
+---
+```
+
+## File naming
+
+- Always `kebab-case.md` (or `.mdx` if JSX needed)
+- No spaces, no underscores, no capitals in filenames
+- Filename becomes the URL slug
+
+## Internal links — STRICT RULE
+
+Use relative paths ONLY. Absolute paths break in production.
+
+```markdown
+✓ [Link](./sibling-page/)
+✓ [Link](../other-category/page/)
+✓ [Link](../../linux/desktop-environments/page/)
+✗ [Link](/privacy/identity/page/)        ← WRONG, breaks deploy
+```
+
+For repo files (LICENSE etc.), use full GitHub URLs:
+```markdown
+[LICENSE](https://github.com/Chuffed-Code/Chuffed-Guides/blob/main/LICENSE)
+```
+
+## SVG and image assets
+
+- Animated SVGs: place in `public/diagrams/`, NEVER in `src/assets/`
+  - `src/assets/` runs through Astro's pipeline and strips `<style>` blocks, breaking animations
+  - `public/` serves files raw
+- Reference path includes the base: `<img src="/Chuffed-Guides/diagrams/file.svg" />`
+- Wrap in `<figure>` with `<figcaption>` for accessibility
+- Include `role="img"`, `<title>`, `<desc>` inside SVG for screen readers
+- Add `@media (prefers-reduced-motion: reduce)` rules to disable animations
+- Keep ASCII fallback above or below figure (renders on GitHub's Markdown preview)
+
+## Sidebar configuration
+
+- Top-level sidebar entries use explicit `label:` (Title Case)
+- Subsections use `autogenerate: { directory: 'topic/category' }`
+- Add `collapsed: false` to keep sections expanded by default
+- When adding subsections, set explicit `label:` to avoid lowercase folder names showing in the UI
+
+## Tone and voice for content
+
+- Direct, practical, lightly opinionated
+- No marketing language ("comprehensive guide to..." — bad)
+- No "made with AI" or attribution flexing
+- No "I hope this helps you on your journey"
+- Match the existing voice: concise, slightly dry, confident
+- Write like explaining to a competent friend who's short on time
+
+## Tone and voice for prose around code (READMEs, comments)
+
+- Matter-of-fact, no humblebragging
+- Document WHAT and WHY, never marketing
+- Don't say "robust", "comprehensive", "powerful", "seamless", "elegant" — show, don't claim
+- Don't add motivational filler
+
+## Things to never do
+
+- Never add absolute internal links (`/privacy/...`)
+- Never put SVG animations in `src/assets/` (use `public/diagrams/`)
+- Never modify `src/content.config.ts` (Starlight schema)
+- Never delete `node_modules/`, `package-lock.json`, or `tsconfig.json`
+- Never add tracking, analytics, or third-party scripts
+- Never add sponsor sections, affiliate links, or ads
+- Never write "made with AI" attribution on the homepage or in guides
+- Never use emoji unless the user explicitly asks
+
+## Things to do without being asked
+
+- When creating a new guide, match existing frontmatter exactly
+- When renaming a file, search for all inbound links and update them
+- When inserting an inline component into a guide, find the precise insertion point in the prose, not just "around" the right area
+- When unsure between two interpretations of an instruction, surface the ambiguity instead of picking one
+
+## Common operations
+
+### New guide
+
+1. Pick `src/content/docs/<topic>/<category>/<filename>.md`
+2. Add frontmatter following convention
+3. Pick `sidebar.order` that fits the existing range in that category
+4. Write content
+
+### New sketch
+
+Same as above but in `src/content/docs/sketches/`. Sketches are short single-concept pieces; if it grows long, move it under a topic.
+
+### Adding an animation to a guide
+
+1. SVG goes in `public/diagrams/`
+2. Insert `<figure>` block in the guide at the relevant position
+3. Keep ASCII fallback in the guide nearby
+
+### Renaming a guide
+
+```
+git mv old/path.md new/path.md
+```
+Then grep for the old path across `src/content/docs/` and update inbound links.
+
+## Troubleshooting Cursor should know
+
+- "Slug X does not exist" → stale sidebar entry in `astro.config.mjs`
+- Links 404 in production but work locally → absolute paths instead of relative
+- `lastUpdated` wrong in production → CI missing `fetch-depth: 0`
+- Animation doesn't animate → SVG is in `src/assets/` instead of `public/`
+- Search broken locally → expected, Pagefind only indexes during `npm run build`
+
+## When the user says...
+
+- "the email guide" → `src/content/docs/privacy/identity/email-and-aliases.md`
+- "the master roadmap" or "the privacy roadmap" → `src/content/docs/privacy/index.md`
+- "the trust guide" → `src/content/docs/privacy/fundamentals/trust-and-assets.md`
+- "the PMB guide" → `src/content/docs/privacy/identity/pmb-ghost-address.md`
+- "the homepage" → `src/content/docs/index.md`
+- "the README" → `README.md` at repo root, NOT `src/content/docs/...`
+
+## Repo root files (do not place these in src/content/docs/)
+
+- `README.md` — repo description
+- `LICENSE` — CC0 dedication
+- `ARCHITECTURE.md` — technical reference
+- `CONTRIBUTING.md` — contribution guide
+
+These belong at the repo root, not inside the site's content collection.
+
+## Build verification
+
+Before declaring a task done, mentally trace:
+1. Does `npm run build` succeed?
+2. Are all sidebar entries valid slugs?
+3. Do all internal links use relative paths?
+4. Does the new content appear in the sidebar at the expected position?
+
+If any answer is uncertain, flag it.
